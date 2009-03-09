@@ -36,7 +36,12 @@ class Missile(target: Body) {
 
 
 
-	def update {
+	/**
+	 * Missile guidance logic.
+	 * Returns true if the missile explodes.
+	 */
+
+	def update: Boolean = {
 		val maxAccelerationForce = 50000.0
 		val maxManeuveringForce = 30000.0
 
@@ -56,5 +61,9 @@ class Missile(target: Body) {
 
 		body.applyForce(accelerationForce)
 		body.applyForce(maneuveringForce)
+
+		val targetRadius = target.shape.asInstanceOf[Circle].radius
+		val missileRadius = body.shape.asInstanceOf[Circle].radius
+		(target.position - body.position).length - targetRadius - missileRadius <= 10
 	}
 }

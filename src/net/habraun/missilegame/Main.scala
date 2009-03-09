@@ -23,6 +23,7 @@ package net.habraun.missilegame
 import java.awt._
 import java.awt.geom._
 import javax.swing._
+import scala.collection.mutable._
 
 import edu.umd.cs.piccolo._
 import edu.umd.cs.piccolo.nodes._
@@ -75,28 +76,61 @@ object Main {
 		val shipView = new ShipView(ship)
 		canvas.getLayer.addChild(shipView.node)
 
-		// Add a single missile.
-		val missile = new Missile(ship.body)
-		missile.body.position = Vec2D(0, -10000)
-		missile.body.velocity = Vec2D(1000, 0)
-		world.add(missile.body)
-		val missileView  = new MissileView(missile)
-		canvas.getLayer.addChild(missileView.node)
-
+		val missiles = new HashMap[Missile, MissileView]
+		
 		// Make window visible.
 		frame.setVisible(true)
 		canvas.requestFocusInWindow
 
+		// Missile spawn timers.
+		var timer1 = 200
+		var timer2 = 300
+
 		while (true) {
 			val timeBefore = System.currentTimeMillis
 
-			missile.update
+			missiles.foreach((missile) => {
+				if (missile._1.update) {
+					world.remove(missile._1.body)
+					missiles -= missile._1
+
+					SwingUtilities.invokeLater(new Runnable { def run {
+						canvas.getLayer.removeChild(missile._2.node)
+					}})
+				}
+			})
 			world.step(timeStep)
 
 			SwingUtilities.invokeLater(new Runnable { def run {
 				shipView.update
-				missileView.update
+				missiles.foreach((missile) => {
+					missile._2.update
+				})
 			}})
+
+			timer1 -= 1
+			timer2 -= 1
+			if (timer1 == 0 || timer2 == 0) {
+				val missile = new Missile(ship.body)
+				val missileView = new MissileView(missile)
+
+				missile.body.position = Vec2D(0, -10000)
+				if (timer1 == 0) {
+					missile.body.velocity = Vec2D(1000, 0)
+					timer1 = 200
+				}
+				else {
+					missile.body.velocity = Vec2D(-1000, 0)
+					timer2 = 200
+				}
+
+				world.add(missile.body)
+				missiles.put(missile, missileView)
+
+				SwingUtilities.invokeLater(new Runnable { def run {
+					canvas.getLayer.addChild(missileView.node)
+				}})
+			}
 			
 
 			val delta = System.currentTimeMillis - timeBefore
