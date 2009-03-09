@@ -31,6 +31,8 @@ import edu.umd.cs.piccolo.nodes._
 
 object Main {
 
+	val timeStep = 1.0 / 50.0
+
 	val screenSizeX = 800
 	val screenSizeY = 600
 
@@ -69,5 +71,17 @@ object Main {
 		// Make window visible.
 		frame.setVisible(true)
 		canvas.requestFocusInWindow
+
+		while (true) {
+			val timeBefore = System.currentTimeMillis
+
+			shipView.update
+
+			val delta = System.currentTimeMillis - timeBefore
+			val missing = (timeStep * 1000).toLong - delta
+			if (missing > 0) {
+				Thread.sleep(missing)
+			}
+		}
 	}
 }
