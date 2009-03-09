@@ -66,14 +66,20 @@ object Main {
 		background.setPaint(backgroundColor)
 		canvas.getLayer.addChild(background)
 
+		// Create a world for the physics simulation.
+		val world = new World
+
 		// Create the player's ship.
 		val ship = new Ship
+		world.add(ship.body)
 		val shipView = new ShipView(ship)
 		canvas.getLayer.addChild(shipView.node)
 
 		// Add a single missile.
 		val missile = new Missile(ship)
 		missile.body.position = Vec2D(0, -10000)
+		missile.body.velocity = Vec2D(1000, 0)
+		world.add(missile.body)
 		val missileView  = new MissileView(missile)
 		canvas.getLayer.addChild(missileView.node)
 
@@ -84,8 +90,13 @@ object Main {
 		while (true) {
 			val timeBefore = System.currentTimeMillis
 
-			shipView.update
-			missileView.update
+			world.step(timeStep)
+
+			SwingUtilities.invokeLater(new Runnable { def run {
+				shipView.update
+				missileView.update
+			}})
+			
 
 			val delta = System.currentTimeMillis - timeBefore
 			val missing = (timeStep * 1000).toLong - delta
