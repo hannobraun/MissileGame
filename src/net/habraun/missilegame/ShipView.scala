@@ -31,11 +31,13 @@ import net.habraun.scd._
 class ShipView(ship: Ship) {
 
 	val node = {
-		val r = ship.body.shape.asInstanceOf[Circle].radius
-		val nodeShape = new Ellipse2D.Double(-r, -r, 2 * r, 2 * r)
-		
-		val node = new PPath(nodeShape)
-		node.setPaint(Color.BLACK)
+		val point1 = new Point2D.Double(-0.5, 0.289)
+		val point2 = new Point2D.Double(0.5, 0.289)
+		val point3 = new Point2D.Double(0, -0.577)
+		val node = PPath.createPolyline(Array(point1, point2, point3, point1))
+
+		node.setPaint(Color.YELLOW)
+		node.setStrokePaint(Color.YELLOW)
 		node.setStroke(Main.defaultStroke)
 
 		node
@@ -45,5 +47,6 @@ class ShipView(ship: Ship) {
 
 	def update {
 		node.setTransform(AffineTransform.getTranslateInstance(ship.body.position.x, ship.body.position.y))
+		node.scale(1 / Main.cameraScale * 20)
 	}
 }

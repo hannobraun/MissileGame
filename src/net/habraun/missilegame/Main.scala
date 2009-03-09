@@ -40,6 +40,8 @@ object Main {
 
 	val defaultStroke = new BasicStroke(0)
 
+	val cameraScale = 1.0 / 40.0
+
 
 
 	def main(args: Array[String]) {
@@ -50,13 +52,13 @@ object Main {
 
 		// Configure the canvas where the scene graph is painted on.
 		val canvas = new PCanvas
-		canvas.removeInputEventListener(canvas.getZoomEventHandler)
-		canvas.removeInputEventListener(canvas.getPanEventHandler)
+		//canvas.removeInputEventListener(canvas.getZoomEventHandler)
+		//canvas.removeInputEventListener(canvas.getPanEventHandler)
 		frame.add(canvas)
 
 		// Adjust the camera.
 		canvas.getCamera.setViewOffset(screenSizeX / 2, screenSizeY / 2)
-		canvas.getCamera.setViewScale(1.0 / 40.0)
+		canvas.getCamera.setViewScale(cameraScale)
 
 		// Configure the background color.
 		val background = PPath.createRectangle(-20000, -20000, 40000, 40000)
@@ -67,7 +69,7 @@ object Main {
 		val ship = new Ship
 		val shipView = new ShipView(ship)
 		canvas.getLayer.addChild(shipView.node)
-		
+
 		// Make window visible.
 		frame.setVisible(true)
 		canvas.requestFocusInWindow
