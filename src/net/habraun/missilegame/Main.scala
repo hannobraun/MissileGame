@@ -26,6 +26,7 @@ import javax.swing._
 
 import edu.umd.cs.piccolo._
 import edu.umd.cs.piccolo.nodes._
+import net.habraun.scd._
 
 
 
@@ -70,6 +71,12 @@ object Main {
 		val shipView = new ShipView(ship)
 		canvas.getLayer.addChild(shipView.node)
 
+		// Add a single missile.
+		val missile = new Missile(ship)
+		missile.body.position = Vec2D(0, -10000)
+		val missileView  = new MissileView(missile)
+		canvas.getLayer.addChild(missileView.node)
+
 		// Make window visible.
 		frame.setVisible(true)
 		canvas.requestFocusInWindow
@@ -78,6 +85,7 @@ object Main {
 			val timeBefore = System.currentTimeMillis
 
 			shipView.update
+			missileView.update
 
 			val delta = System.currentTimeMillis - timeBefore
 			val missing = (timeStep * 1000).toLong - delta
