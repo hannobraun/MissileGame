@@ -61,6 +61,11 @@ object Main {
 		background.setPaint(backgroundColor)
 		canvas.getLayer.addChild(background)
 
+		// Create the player's ship.
+		val ship = new Ship
+		val shipView = new ShipView(ship)
+		canvas.getLayer.addChild(shipView.node)
+		
 		// Make window visible.
 		frame.setVisible(true)
 		canvas.requestFocusInWindow
