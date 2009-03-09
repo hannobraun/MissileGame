@@ -33,7 +33,6 @@ class Missile(target: Body) {
 
 		body
 	}
-	Console.println("body.position: " + body.position)
 
 
 
