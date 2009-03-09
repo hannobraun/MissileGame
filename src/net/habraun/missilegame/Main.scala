@@ -78,6 +78,7 @@ object Main {
 		// Add a single missile.
 		val missile = new Missile(ship.body)
 		missile.body.position = Vec2D(0, -10000)
+		missile.body.velocity = Vec2D(1000, 0)
 		world.add(missile.body)
 		val missileView  = new MissileView(missile)
 		canvas.getLayer.addChild(missileView.node)

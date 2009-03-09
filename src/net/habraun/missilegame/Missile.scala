@@ -38,22 +38,24 @@ class Missile(target: Body) {
 
 
 	def update {
+		val maxAccelerationForce = 50000.0
+		val maxManeuveringForce = 30000.0
+
 		val nominalHeading = (target.position - body.position).normalize
 		val deviatingVelocity = body.velocity.project(nominalHeading.orthogonal)
-		val antiDeviationForce = -deviatingVelocity * body.mass / Main.timeStep
-
-		val maximumForce = 50000.0
-
-		val actualForce = {
-			if (maximumForce * maximumForce < antiDeviationForce.squaredLength) {
-				antiDeviationForce * (maximumForce / antiDeviationForce.length)
+		
+		val accelerationForce = nominalHeading * maxAccelerationForce
+		val maneuveringForce = {
+			val correctionForce = -deviatingVelocity * body.mass / Main.timeStep
+			if (correctionForce * correctionForce <= maxManeuveringForce) {
+				correctionForce
 			}
 			else {
-				val accelerationForce = nominalHeading * (maximumForce - antiDeviationForce.length)
-				val actualForce = antiDeviationForce + accelerationForce
-				actualForce
+				correctionForce * (maxManeuveringForce / correctionForce.length)
 			}
 		}
-		body.applyForce(actualForce)
+
+		body.applyForce(accelerationForce)
+		body.applyForce(maneuveringForce)
 	}
 }
