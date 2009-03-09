@@ -21,6 +21,7 @@ package net.habraun.missilegame
 
 
 import java.awt._
+import java.awt.geom._
 import javax.swing._
 
 import edu.umd.cs.piccolo._
@@ -35,11 +36,15 @@ object Main {
 
 	val backgroundColor = new Color(0, 0, 120)
 
+	val defaultStroke = new BasicStroke(0)
+
+
+
 	def main(args: Array[String]) {
 		// Configure the main window.
 		val frame = new JFrame("Missile Game 0.1")
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
-		frame.setSize(screenSizeX + 12, screenSizeY + 35)
+		frame.setSize(screenSizeX, screenSizeY)
 
 		// Configure the canvas where the scene graph is painted on.
 		val canvas = new PCanvas
@@ -47,8 +52,12 @@ object Main {
 		canvas.removeInputEventListener(canvas.getPanEventHandler)
 		frame.add(canvas)
 
+		// Adjust the camera.
+		canvas.getCamera.setViewOffset(screenSizeX / 2, screenSizeY / 2)
+		canvas.getCamera.setViewScale(1.0 / 40.0)
+
 		// Configure the background color.
-		val background = PPath.createRectangle(0, 0, screenSizeX, screenSizeY)
+		val background = PPath.createRectangle(-20000, -20000, 40000, 40000)
 		background.setPaint(backgroundColor)
 		canvas.getLayer.addChild(background)
 
