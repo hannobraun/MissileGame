@@ -24,7 +24,7 @@ import net.habraun.scd._
 
 
 
-class Missile(target: Ship) {
+class Missile(target: Body) {
 
 	val body = {
 		val body = new Body
@@ -32,5 +32,28 @@ class Missile(target: Ship) {
 		body.shape = Circle(1)
 
 		body
+	}
+	Console.println("body.position: " + body.position)
+
+
+
+	def update {
+		val nominalHeading = (target.position - body.position).normalize
+		val deviatingVelocity = body.velocity.project(nominalHeading.orthogonal)
+		val antiDeviationForce = -deviatingVelocity * body.mass / Main.timeStep
+
+		val maximumForce = 50000.0
+
+		val actualForce = {
+			if (maximumForce * maximumForce < antiDeviationForce.squaredLength) {
+				antiDeviationForce * (maximumForce / antiDeviationForce.length)
+			}
+			else {
+				val accelerationForce = nominalHeading * (maximumForce - antiDeviationForce.length)
+				val actualForce = antiDeviationForce + accelerationForce
+				actualForce
+			}
+		}
+		body.applyForce(actualForce)
 	}
 }
