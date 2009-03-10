@@ -23,13 +23,17 @@ package net.habraun.missilegame
 import java.awt._
 import java.awt.geom._
 
+import edu.umd.cs.piccolo._
 import edu.umd.cs.piccolo.nodes._
+import net.habraun.scd._
 
 
 
 class MissileView(missile: Missile) {
 
-	val node = {
+	val node = new PNode
+	
+	val symbolNode = {
 		val point1 = new Point2D.Double(-0.333, 0.333)
 		val point2 = new Point2D.Double(0.333, 0.333)
 		val point3 = new Point2D.Double(0, -0.666)
@@ -39,8 +43,31 @@ class MissileView(missile: Missile) {
 		node.setStrokePaint(Color.RED)
 		node.setStroke(Main.defaultStroke)
 
+		node.setRotation(-Math.Pi / 4)
+		
 		node
 	}
+	node.addChild(symbolNode)
+
+	val speedNode = {
+		val node = new PText
+		node.setTextPaint(Color.WHITE)
+		node.setOffset(0.8, -0.8)
+		node.setScale(0.05)
+
+		node
+	}
+	node.addChild(speedNode)
+
+	val orientationNode = {
+		val node = new PText
+		node.setTextPaint(Color.WHITE)
+		node.setOffset(0.8, -0.3)
+		node.setScale(0.05)
+
+		node
+	}
+	node.addChild(orientationNode)
 
 
 
@@ -49,6 +76,13 @@ class MissileView(missile: Missile) {
 		val y = missile.body.position.y
 		node.setTransform(AffineTransform.getTranslateInstance(x, y))
 		node.scale(1 / Main.cameraScale * 10)
-		node.rotate(-Math.Pi / 4)
+
+		speedNode.setText(missile.body.velocity.length.toInt.toString)
+
+		val r = Vec2D(0, -1)
+		val v = missile.body.velocity
+		val angle = Math.toDegrees(Math.acos((r * v) / (r.length * v.length)))
+		val orientation = if (v.x < 0) angle else 360 - angle
+		orientationNode.setText(orientation.toInt.toString)
 	}
 }
