@@ -49,10 +49,20 @@ class MissileView(missile: Missile) {
 	}
 	node.addChild(symbolNode)
 
-	val speedNode = {
+	val distanceNode = {
 		val node = new PText
 		node.setTextPaint(Color.WHITE)
 		node.setOffset(0.8, -0.9)
+		node.setScale(0.05)
+
+		node
+	}
+	node.addChild(distanceNode)
+
+	val speedNode = {
+		val node = new PText
+		node.setTextPaint(Color.WHITE)
+		node.setOffset(0.8, -0.3)
 		node.setScale(0.05)
 
 		node
@@ -62,22 +72,12 @@ class MissileView(missile: Missile) {
 	val orientationNode = {
 		val node = new PText
 		node.setTextPaint(Color.WHITE)
-		node.setOffset(0.8, -0.3)
-		node.setScale(0.05)
-
-		node
-	}
-	node.addChild(orientationNode)
-
-	val energyNode = {
-		val node = new PText
-		node.setTextPaint(Color.WHITE)
 		node.setOffset(0.8, 0.3)
 		node.setScale(0.05)
 
 		node
 	}
-	node.addChild(energyNode)
+	node.addChild(orientationNode)
 
 
 
@@ -87,6 +87,8 @@ class MissileView(missile: Missile) {
 		node.setTransform(AffineTransform.getTranslateInstance(x, y))
 		node.scale(1 / Main.cameraScale * 15)
 
+		distanceNode.setText((missile.body.position - missile.target.position).length.toInt.toString)
+
 		speedNode.setText(missile.body.velocity.length.toInt.toString)
 
 		val r = Vec2D(0, -1)
@@ -94,7 +96,5 @@ class MissileView(missile: Missile) {
 		val angle = Math.toDegrees(Math.acos((r * v) / (r.length * v.length)))
 		val orientation = if (v.x < 0) angle else 360 - angle
 		orientationNode.setText(orientation.toInt.toString)
-
-		energyNode.setText("???")
 	}
 }

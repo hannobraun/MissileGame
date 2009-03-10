@@ -24,7 +24,7 @@ import net.habraun.scd._
 
 
 
-class Missile(target: Body) {
+class Missile(_target: Body) {
 
 	val body = {
 		val body = new Body
@@ -33,6 +33,10 @@ class Missile(target: Body) {
 
 		body
 	}
+
+
+
+	def target = _target
 
 
 
@@ -45,7 +49,7 @@ class Missile(target: Body) {
 		val maxAccelerationForce = 5000.0
 		val maxManeuveringForce = 3000.0
 
-		val nominalHeading = (target.position - body.position).normalize
+		val nominalHeading = (_target.position - body.position).normalize
 		val deviatingVelocity = body.velocity.project(nominalHeading.orthogonal)
 		
 		val accelerationForce = nominalHeading * maxAccelerationForce
