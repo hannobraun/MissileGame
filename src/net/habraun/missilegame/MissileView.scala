@@ -69,6 +69,16 @@ class MissileView(missile: Missile) {
 	}
 	node.addChild(orientationNode)
 
+	val energyNode = {
+		val node = new PText
+		node.setTextPaint(Color.WHITE)
+		node.setOffset(0.8, 0.2)
+		node.setScale(0.05)
+
+		node
+	}
+	node.addChild(energyNode)
+
 
 
 	def update {
@@ -84,5 +94,7 @@ class MissileView(missile: Missile) {
 		val angle = Math.toDegrees(Math.acos((r * v) / (r.length * v.length)))
 		val orientation = if (v.x < 0) angle else 360 - angle
 		orientationNode.setText(orientation.toInt.toString)
+
+		energyNode.setText("???")
 	}
 }
