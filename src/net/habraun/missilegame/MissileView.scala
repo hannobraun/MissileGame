@@ -52,7 +52,7 @@ class MissileView(missile: Missile) {
 	val speedNode = {
 		val node = new PText
 		node.setTextPaint(Color.WHITE)
-		node.setOffset(0.8, -0.8)
+		node.setOffset(0.8, -0.9)
 		node.setScale(0.05)
 
 		node
@@ -72,7 +72,7 @@ class MissileView(missile: Missile) {
 	val energyNode = {
 		val node = new PText
 		node.setTextPaint(Color.WHITE)
-		node.setOffset(0.8, 0.2)
+		node.setOffset(0.8, 0.3)
 		node.setScale(0.05)
 
 		node
@@ -85,7 +85,7 @@ class MissileView(missile: Missile) {
 		val x = missile.body.position.x
 		val y = missile.body.position.y
 		node.setTransform(AffineTransform.getTranslateInstance(x, y))
-		node.scale(1 / Main.cameraScale * 10)
+		node.scale(1 / Main.cameraScale * 15)
 
 		speedNode.setText(missile.body.velocity.length.toInt.toString)
 
