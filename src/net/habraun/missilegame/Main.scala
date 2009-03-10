@@ -83,8 +83,8 @@ object Main {
 		canvas.requestFocusInWindow
 
 		// Missile spawn timers.
-		var timer1 = 200
-		var timer2 = 300
+		var timer1 = 250
+		var timer2 = 0
 
 		while (true) {
 			val timeBefore = System.currentTimeMillis
@@ -110,19 +110,28 @@ object Main {
 
 			timer1 -= 1
 			timer2 -= 1
-			if (timer1 == 0 || timer2 == 0) {
+			if (timer1 <= 0) {
 				val missile = new Missile(ship.body)
 				val missileView = new MissileView(missile)
 
-				missile.body.position = Vec2D(0, -10000)
-				if (timer1 == 0) {
-					missile.body.velocity = Vec2D(1000, 0)
-					timer1 = 200
-				}
-				else {
-					missile.body.velocity = Vec2D(-1000, 0)
-					timer2 = 200
-				}
+				missile.body.position = Vec2D(10, -10000)
+				missile.body.velocity = Vec2D(100, -100)
+				timer1 = 500
+
+				world.add(missile.body)
+				missiles.put(missile, missileView)
+
+				SwingUtilities.invokeLater(new Runnable { def run {
+					canvas.getLayer.addChild(missileView.node)
+				}})
+			}
+			if (timer2 <= 0) {
+				val missile = new Missile(ship.body)
+				val missileView = new MissileView(missile)
+
+				missile.body.position = Vec2D(-10, -10000)
+				missile.body.velocity = Vec2D(-100, -100)
+				timer2 = 500
 
 				world.add(missile.body)
 				missiles.put(missile, missileView)
