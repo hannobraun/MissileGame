@@ -42,8 +42,8 @@ class Missile(target: Body) {
 	 */
 
 	def update: Boolean = {
-		val maxAccelerationForce = 50000.0
-		val maxManeuveringForce = 30000.0
+		val maxAccelerationForce = 5000.0
+		val maxManeuveringForce = 3000.0
 
 		val nominalHeading = (target.position - body.position).normalize
 		val deviatingVelocity = body.velocity.project(nominalHeading.orthogonal)
