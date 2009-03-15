@@ -85,7 +85,7 @@ class MissileView(missile: Missile) {
 		val x = missile.body.position.x
 		val y = missile.body.position.y
 		node.setTransform(AffineTransform.getTranslateInstance(x, y))
-		node.scale(1 / Main.cameraScale * 15)
+		node.scale(15)
 
 		distanceNode.setText((missile.body.position - missile.target.position).length.toInt.toString)
 
