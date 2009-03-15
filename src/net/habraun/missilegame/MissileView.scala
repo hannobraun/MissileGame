@@ -82,8 +82,8 @@ class MissileView(missile: Missile) {
 
 
 	def update {
-		val x = missile.body.position.x
-		val y = missile.body.position.y
+		val x = missile.body.position.x * Main.scannerRadius / 10000
+		val y = missile.body.position.y * Main.scannerRadius / 10000
 		node.setTransform(AffineTransform.getTranslateInstance(x, y))
 		node.scale(15)
 

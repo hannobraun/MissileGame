@@ -46,7 +46,9 @@ class ShipView(ship: Ship) {
 
 
 	def update {
-		node.setTransform(AffineTransform.getTranslateInstance(ship.body.position.x, ship.body.position.y))
+		val x = ship.body.position.x * Main.scannerRadius / 10000 - (node.getWidth / 2)
+		val y = ship.body.position.y * Main.scannerRadius / 10000 - (node.getHeight / 2)
+		node.setTransform(AffineTransform.getTranslateInstance(x, y))
 		node.scale(20)
 	}
 }
