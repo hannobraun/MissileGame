@@ -34,7 +34,7 @@ class ScannerDisplay(radius: Float) extends ScannerDisplayConstants {
 		// node.
 		val node = PPath.createEllipse(-radius, -radius, radius * 2, radius * 2)
 		node.setPaint(background)
-		node.setStroke(new BasicStroke(2))
+		node.setStroke(stroke)
 		node.setStrokePaint(markings)
 
 		// The circle around the scanner display with the direction markings.
@@ -53,7 +53,7 @@ class ScannerDisplay(radius: Float) extends ScannerDisplayConstants {
 			val lineEnd = new Point2D.Double(endX, endY)
 			val line = PPath.createPolyline(Array(lineStart, lineEnd))
 			line.setStrokePaint(markings)
-			line.setStroke(new BasicStroke(2))
+			line.setStroke(stroke)
 
 			val angleText = new PText(displayedAngle.toString)
 			angleText.scale(0.8)
@@ -79,6 +79,8 @@ trait ScannerDisplayConstants {
 	// Colors
 	val background = new Color(0, 0, 120)
 	val markings = Color.WHITE
+
+	val stroke = new BasicStroke(2)
 
 	val directionMarkingOffset = 3
 	val directionOffset = 20
