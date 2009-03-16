@@ -39,10 +39,6 @@ object Main {
 	val screenSizeY = 600
 
 	val scannerRadius = 230
-	val directionMarkingOffset = 3
-	val directionOffset = 20
-
-	val scannerBackground = new Color(0, 0, 120)
 
 	val defaultStroke = new BasicStroke(0)
 
@@ -69,43 +65,8 @@ object Main {
 		canvas.getLayer.addChild(background)
 
 		// Configure scanner display.
-		val scannerDisplay = PPath.createEllipse(-scannerRadius, -scannerRadius, scannerRadius * 2,
-				scannerRadius * 2)
-		scannerDisplay.setPaint(scannerBackground)
-		scannerDisplay.setStroke(new BasicStroke(2))
-		scannerDisplay.setStrokePaint(Color.WHITE)
-		canvas.getLayer.addChild(scannerDisplay)
-
-		var directionMarkings = Nil
-		for ( i <- 0 until 24) {
-			val displayedAngle = i * 15
-			val actualAngle = Math.toRadians(i * 15 - 90)
-
-			val startRadius = scannerRadius - directionMarkingOffset
-			val endRadius = scannerRadius + directionMarkingOffset
-			val startX = startRadius * Math.cos(actualAngle)
-			val startY = startRadius * Math.sin(actualAngle)
-			val endX = endRadius * Math.cos(actualAngle)
-			val endY = endRadius * Math.sin(actualAngle)
-			val lineStart = new Point2D.Double(startX, startY)
-			val lineEnd = new Point2D.Double(endX, endY)
-			val line = PPath.createPolyline(Array(lineStart, lineEnd))
-			line.setStrokePaint(Color.WHITE)
-			line.setStroke(new BasicStroke(2))
-
-			val angleText = new PText(displayedAngle.toString)
-			angleText.scale(0.8)
-			val angleX = Math.cos(actualAngle) * (scannerRadius + directionOffset)
-			val angleY = Math.sin(actualAngle) * (scannerRadius + directionOffset)
-			val angleXOffset = -(angleText.getWidth * angleText.getScale / 2)
-			val angleYOffset = -(angleText.getHeight * angleText.getScale / 2)
-			
-			angleText.setTextPaint(Color.WHITE)
-			angleText.setOffset(angleX + angleXOffset, angleY + angleYOffset)
-			
-			scannerDisplay.addChild(line)
-			scannerDisplay.addChild(angleText)
-		}
+		val scannerDisplay = new ScannerDisplay(scannerRadius)
+		canvas.getLayer.addChild(scannerDisplay.node)
 
 		// Create a world for the physics simulation.
 		val world = new World
