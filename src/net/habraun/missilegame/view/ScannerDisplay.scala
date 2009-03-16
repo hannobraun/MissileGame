@@ -69,6 +69,31 @@ class ScannerDisplay(radius: Float) extends ScannerDisplayConstants {
 			node.addChild(angleText)
 		}
 
+		// A small circle around the player's ship.
+		val innerCircle = PPath.createEllipse(-innerRadius, -innerRadius, innerRadius * 2, innerRadius * 2)
+		innerCircle.setPaint(background)
+		innerCircle.setStroke(fineStroke)
+		//innerCircle.setStrokePaint(innerMarkings)
+		innerCircle.setStrokePaint(markings)
+		node.addChild(innerCircle)
+
+		// Lines each 45 degrees from the inner to the outer circle.
+		for ( i <- 0 until 4 ) {
+			val angle = i * (Math.Pi / 2)
+			val startX = innerRadius * Math.cos(angle)
+			val startY = innerRadius * Math.sin(angle)
+			val endX = (radius - directionMarkingOffset) * Math.cos(angle)
+			val endY = (radius - directionMarkingOffset) * Math.sin(angle)
+			val lineStart = new Point2D.Double(startX, startY)
+			val lineEnd = new Point2D.Double(endX, endY)
+			val line = PPath.createPolyline(Array(lineStart, lineEnd))
+			//line.setStrokePaint(innerMarkings)
+			line.setStrokePaint(markings)
+			line.setStroke(fineStroke)
+
+			node.addChild(line)
+		}
+
 		node
 	}
 }
@@ -79,9 +104,12 @@ trait ScannerDisplayConstants {
 	// Colors
 	val background = new Color(0, 0, 120)
 	val markings = Color.WHITE
+	val innerMarkings = new Color(0, 0, 200)
 
 	val stroke = new BasicStroke(2)
+	val fineStroke = new BasicStroke(1)
 
 	val directionMarkingOffset = 3
 	val directionOffset = 20
+	val innerRadius = 20
 }
