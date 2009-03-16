@@ -92,6 +92,17 @@ class ScannerDisplay(radius: Float) extends ScannerDisplayConstants {
 			node.addChild(line)
 		}
 
+		// More circles around the player ship that are supposed to help with judging distance.
+		for ( i <- 0 until distanceCircleNumber ) {
+			val r = radius * ((i + 1) / (distanceCircleNumber + 1).toFloat)
+			val circle = PPath.createEllipse(-r, -r, r * 2, r * 2)
+			circle.setPaint(transparency)
+			circle.setStroke(fineStroke)
+			circle.setStrokePaint(markings)
+
+			node.addChild(circle)
+		}
+
 		node
 	}
 }
@@ -102,6 +113,7 @@ trait ScannerDisplayConstants {
 	// Colors
 	val background = new Color(0, 0, 120)
 	val markings = Color.WHITE
+	val transparency = new Color(0, 0, 0, 0)
 
 	val stroke = new BasicStroke(2)
 	val fineStroke = new BasicStroke(1)
@@ -109,4 +121,6 @@ trait ScannerDisplayConstants {
 	val directionMarkingOffset = 3
 	val directionOffset = 20
 	val innerRadius = 20
+
+	val distanceCircleNumber = 3
 }
