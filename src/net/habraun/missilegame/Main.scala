@@ -20,6 +20,8 @@ package net.habraun.missilegame
 
 
 
+import view._
+
 import java.awt._
 import java.awt.geom._
 import javax.swing._
@@ -75,7 +77,7 @@ object Main {
 		val ship = new Ship
 		world.add(ship.body)
 		val shipView = new ShipView(ship)
-		canvas.getLayer.addChild(shipView.node)
+		scannerDisplay.node.addChild(shipView.node)
 
 		val missiles = new HashMap[Missile, MissileView]
 		
@@ -96,7 +98,7 @@ object Main {
 					missiles -= missile._1
 
 					SwingUtilities.invokeLater(new Runnable { def run {
-						canvas.getLayer.removeChild(missile._2.node)
+						scannerDisplay.node.removeChild(missile._2.node)
 					}})
 				}
 			})
@@ -123,7 +125,7 @@ object Main {
 				missiles.put(missile, missileView)
 
 				SwingUtilities.invokeLater(new Runnable { def run {
-					canvas.getLayer.addChild(missileView.node)
+					scannerDisplay.node.addChild(missileView.node)
 				}})
 			}
 			if (timer2 <= 0) {
@@ -138,7 +140,7 @@ object Main {
 				missiles.put(missile, missileView)
 
 				SwingUtilities.invokeLater(new Runnable { def run {
-					canvas.getLayer.addChild(missileView.node)
+					scannerDisplay.node.addChild(missileView.node)
 				}})
 			}
 			

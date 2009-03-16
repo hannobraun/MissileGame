@@ -16,7 +16,7 @@
 
 
 
-package net.habraun.missilegame
+package net.habraun.missilegame.view
 
 
 
