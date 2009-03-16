@@ -73,7 +73,6 @@ class ScannerDisplay(radius: Float) extends ScannerDisplayConstants {
 		val innerCircle = PPath.createEllipse(-innerRadius, -innerRadius, innerRadius * 2, innerRadius * 2)
 		innerCircle.setPaint(background)
 		innerCircle.setStroke(fineStroke)
-		//innerCircle.setStrokePaint(innerMarkings)
 		innerCircle.setStrokePaint(markings)
 		node.addChild(innerCircle)
 
@@ -87,7 +86,6 @@ class ScannerDisplay(radius: Float) extends ScannerDisplayConstants {
 			val lineStart = new Point2D.Double(startX, startY)
 			val lineEnd = new Point2D.Double(endX, endY)
 			val line = PPath.createPolyline(Array(lineStart, lineEnd))
-			//line.setStrokePaint(innerMarkings)
 			line.setStrokePaint(markings)
 			line.setStroke(fineStroke)
 
@@ -104,7 +102,6 @@ trait ScannerDisplayConstants {
 	// Colors
 	val background = new Color(0, 0, 120)
 	val markings = Color.WHITE
-	val innerMarkings = new Color(0, 0, 200)
 
 	val stroke = new BasicStroke(2)
 	val fineStroke = new BasicStroke(1)
