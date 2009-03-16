@@ -20,14 +20,15 @@ package net.habraun.missilegame.view
 
 
 
-import java.awt._
+import java.awt.BasicStroke
+import java.awt.Color
 import java.awt.geom._
 
 import edu.umd.cs.piccolo.nodes._
 
 
 
-class ScannerDisplay(radius: Float) extends ScannerDisplayConstants {
+class ScannerDisplay(radius: Float, defaultRange: Double) extends ScannerDisplayConstants {
 
 	val node = {
 		// The blue background color of the scanner display. Any other scanner graphics will be added to this
@@ -92,18 +93,36 @@ class ScannerDisplay(radius: Float) extends ScannerDisplayConstants {
 			node.addChild(line)
 		}
 
-		// More circles around the player ship that are supposed to help with judging distance.
-		for ( i <- 0 until distanceCircleNumber ) {
-			val r = radius * ((i + 1) / (distanceCircleNumber + 1).toFloat)
-			val circle = PPath.createEllipse(-r, -r, r * 2, r * 2)
-			circle.setPaint(transparency)
-			circle.setStroke(fineStroke)
-			circle.setStrokePaint(markings)
-
-			node.addChild(circle)
-		}
-
 		node
+	}
+	
+	// More circles around the player ship that are supposed to help with judging distance.
+	var distances: List[PText] = Nil
+	for ( i <- 0 until distanceCircleNumber ) {
+		val r = radius * ((i + 1) / (distanceCircleNumber + 1).toFloat)
+		val circle = PPath.createEllipse(-r, -r, r * 2, r * 2)
+		circle.setPaint(transparency)
+		circle.setStroke(fineStroke)
+		circle.setStrokePaint(markings)
+
+		val distance = new PText("???")
+		distance.setTextPaint(markings)
+		distance.scale(0.8)
+		distance.setOffset(5, -r - 13)
+
+		node.addChild(circle)
+		node.addChild(distance)
+
+		distances = distances ::: List(distance)
+	}
+
+
+
+	def update(zoom: Double) {
+		for ( i <- 0 until distances.length ) {
+			val distance = (defaultRange * (i + 1) / (distances.length + 1).toDouble).toInt
+			distances(i).setText(distance.toString)
+		}
 	}
 }
 

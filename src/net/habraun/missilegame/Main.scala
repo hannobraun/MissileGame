@@ -67,7 +67,7 @@ object Main {
 		canvas.getLayer.addChild(background)
 
 		// Configure scanner display.
-		val scannerDisplay = new ScannerDisplay(scannerRadius)
+		val scannerDisplay = new ScannerDisplay(scannerRadius, 10000)
 		canvas.getLayer.addChild(scannerDisplay.node)
 
 		// Create a world for the physics simulation.
@@ -109,6 +109,7 @@ object Main {
 				missiles.foreach((missile) => {
 					missile._2.update
 				})
+				scannerDisplay.update(1)
 			}})
 
 			timer1 -= 1
