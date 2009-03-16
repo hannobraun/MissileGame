@@ -30,11 +30,14 @@ import edu.umd.cs.piccolo.nodes._
 class ScannerDisplay(radius: Float) extends ScannerDisplayConstants {
 
 	val node = {
+		// The blue background color of the scanner display. Any other scanner graphics will be added to this
+		// node.
 		val node = PPath.createEllipse(-radius, -radius, radius * 2, radius * 2)
 		node.setPaint(background)
 		node.setStroke(new BasicStroke(2))
 		node.setStrokePaint(markings)
 
+		// The circle around the scanner display with the direction markings.
 		var directionMarkings = Nil
 		for ( i <- 0 until 24) {
 			val displayedAngle = i * 15
