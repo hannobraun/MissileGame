@@ -29,7 +29,7 @@ import net.habraun.scd._
 
 
 
-class MissileView(missile: Missile) {
+class MissileView(missile: Missile, scannerRadius: Double) {
 
 	val node = new PNode
 	
@@ -81,9 +81,9 @@ class MissileView(missile: Missile) {
 
 
 
-	def update {
-		val x = missile.body.position.x * Main.scannerRadius / 10000
-		val y = missile.body.position.y * Main.scannerRadius / 10000
+	def update(scanRange: Double) {
+		val x = missile.body.position.x * scannerRadius / scanRange
+		val y = missile.body.position.y * scannerRadius / scanRange
 		node.setTransform(AffineTransform.getTranslateInstance(x, y))
 		node.scale(15)
 

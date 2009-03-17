@@ -106,7 +106,7 @@ object Main {
 
 			SwingUtilities.invokeLater(new Runnable { def run {
 				missiles.foreach((missile) => {
-					missile._2.update
+					missile._2.update(10000)
 				})
 				scannerDisplay.update(1)
 			}})
@@ -115,7 +115,7 @@ object Main {
 			timer2 -= 1
 			if (timer1 <= 0) {
 				val missile = new Missile(ship.body)
-				val missileView = new MissileView(missile)
+				val missileView = new MissileView(missile, scannerRadius)
 
 				missile.body.position = Vec2D(10, -10000)
 				missile.body.velocity = Vec2D(100, -100)
@@ -130,7 +130,7 @@ object Main {
 			}
 			if (timer2 <= 0) {
 				val missile = new Missile(ship.body)
-				val missileView = new MissileView(missile)
+				val missileView = new MissileView(missile, scannerRadius)
 
 				missile.body.position = Vec2D(-10, -10000)
 				missile.body.velocity = Vec2D(-100, -100)
