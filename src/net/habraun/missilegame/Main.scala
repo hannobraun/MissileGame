@@ -74,6 +74,7 @@ object Main {
 		world.add(ship.body)
 		
 		val missiles = new HashMap[Missile, MissileView]
+		val explosions = new HashSet[Explosion]
 
 		// Initialize the display.
 		val view = new View(canvas.getLayer, ship)
@@ -102,6 +103,10 @@ object Main {
 
 					SwingUtilities.invokeLater(new Runnable { def run {
 						view.scannerDisplay.node.removeChild(missile._2.node)
+
+						val explosion = new Explosion(missile._1.body.position, 10, scannerRadius)
+						explosions.addEntry(explosion)
+						view.scannerDisplay.node.addChild(explosion.node)
 					}})
 				}
 			})
@@ -112,6 +117,13 @@ object Main {
 					missile._2.update(10000 / zoom, ship.body.position)
 				})
 				view.scannerDisplay.update(zoom)
+
+				explosions.foreach((explosion) => {
+					if (explosion.update(10000 / zoom, ship.body.position)) {
+						explosions.removeEntry(explosion)
+						view.scannerDisplay.node.removeChild(explosion.node)
+					}
+				})
 			}})
 
 			timer1 -= 1
