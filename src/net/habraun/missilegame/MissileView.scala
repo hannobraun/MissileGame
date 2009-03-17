@@ -81,9 +81,9 @@ class MissileView(missile: Missile, scannerRadius: Double) {
 
 
 
-	def update(scanRange: Double) {
-		val x = missile.body.position.x * scannerRadius / scanRange
-		val y = missile.body.position.y * scannerRadius / scanRange
+	def update(scanRange: Double, center: Vec2D) {
+		val x = (missile.body.position.x - center.x) * scannerRadius / scanRange
+		val y = (missile.body.position.y - center.y) * scannerRadius / scanRange
 		node.setTransform(AffineTransform.getTranslateInstance(x, y))
 		node.scale(15)
 

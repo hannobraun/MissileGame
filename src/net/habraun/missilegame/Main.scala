@@ -106,7 +106,7 @@ object Main {
 
 			SwingUtilities.invokeLater(new Runnable { def run {
 				missiles.foreach((missile) => {
-					missile._2.update(10000)
+					missile._2.update(10000, ship.body.position)
 				})
 				scannerDisplay.update(1)
 			}})
