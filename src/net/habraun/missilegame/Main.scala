@@ -86,10 +86,12 @@ object Main {
 		var timer1 = 250
 		var timer2 = 0
 
+		var zoom = 1.0
+
 		while (true) {
 			val timeBefore = System.currentTimeMillis
 
-			Console.println(mouseHandler.wheelRotation)
+			zoom = zoom * Math.pow(2, mouseHandler.wheelRotation)
 
 			missiles.foreach((missile) => {
 				if (missile._1.update) {
@@ -105,9 +107,9 @@ object Main {
 
 			SwingUtilities.invokeLater(new Runnable { def run {
 				missiles.foreach((missile) => {
-					missile._2.update(10000, ship.body.position)
+					missile._2.update(10000 / zoom, ship.body.position)
 				})
-				view.scannerDisplay.update(1)
+				view.scannerDisplay.update(zoom)
 			}})
 
 			timer1 -= 1
