@@ -74,7 +74,7 @@ class ScannerDisplay(radius: Float, defaultRange: Double) extends ScannerDisplay
 		val innerCircle = PPath.createEllipse(-innerRadius, -innerRadius, innerRadius * 2, innerRadius * 2)
 		innerCircle.setPaint(background)
 		innerCircle.setStroke(fineStroke)
-		innerCircle.setStrokePaint(markings)
+		innerCircle.setStrokePaint(innerMarkings)
 		node.addChild(innerCircle)
 
 		// Lines each 45 degrees from the inner to the outer circle.
@@ -82,12 +82,12 @@ class ScannerDisplay(radius: Float, defaultRange: Double) extends ScannerDisplay
 			val angle = i * (Math.Pi / 2)
 			val startX = innerRadius * Math.cos(angle)
 			val startY = innerRadius * Math.sin(angle)
-			val endX = (radius - directionMarkingOffset) * Math.cos(angle)
-			val endY = (radius - directionMarkingOffset) * Math.sin(angle)
+			val endX = (radius - directionMarkingOffset - 1.5) * Math.cos(angle)
+			val endY = (radius - directionMarkingOffset - 1.5) * Math.sin(angle)
 			val lineStart = new Point2D.Double(startX, startY)
 			val lineEnd = new Point2D.Double(endX, endY)
 			val line = PPath.createPolyline(Array(lineStart, lineEnd))
-			line.setStrokePaint(markings)
+			line.setStrokePaint(innerMarkings)
 			line.setStroke(fineStroke)
 
 			node.addChild(line)
@@ -103,10 +103,10 @@ class ScannerDisplay(radius: Float, defaultRange: Double) extends ScannerDisplay
 		val circle = PPath.createEllipse(-r, -r, r * 2, r * 2)
 		circle.setPaint(transparency)
 		circle.setStroke(fineStroke)
-		circle.setStrokePaint(markings)
+		circle.setStrokePaint(innerMarkings)
 
 		val distance = new PText("???")
-		distance.setTextPaint(markings)
+		distance.setTextPaint(innerMarkings)
 		distance.scale(0.8)
 		distance.setOffset(5, -r - 13)
 
@@ -132,6 +132,7 @@ trait ScannerDisplayConstants {
 	// Colors
 	val background = new Color(0, 0, 120)
 	val markings = Color.WHITE
+	val innerMarkings = new Color(0, 0, 200)
 	val transparency = new Color(0, 0, 0, 0)
 
 	val stroke = new BasicStroke(2)
