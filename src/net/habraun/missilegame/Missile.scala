@@ -36,6 +36,13 @@ class Missile(_target: Body) {
 
 
 
+	private[this] var _killed = false
+	
+	def killed = _killed
+
+
+
+
 	def target = _target
 
 
@@ -68,6 +75,8 @@ class Missile(_target: Body) {
 
 		val targetRadius = target.shape.asInstanceOf[Circle].radius
 		val missileRadius = body.shape.asInstanceOf[Circle].radius
-		(target.position - body.position).length - targetRadius - missileRadius <= 10
+		_killed = (target.position - body.position).length - targetRadius - missileRadius <= 10
+
+		_killed
 	}
 }
