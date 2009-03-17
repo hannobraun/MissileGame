@@ -92,6 +92,8 @@ object Main {
 			val timeBefore = System.currentTimeMillis
 
 			zoom += -mouseHandler.wheelRotation * 0.1
+			zoom = Math.max(0.01, zoom)
+			zoom = Math.min(5, zoom)
 
 			missiles.foreach((missile) => {
 				if (missile._1.update) {
