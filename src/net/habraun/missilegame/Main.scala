@@ -20,6 +20,7 @@ package net.habraun.missilegame
 
 
 
+import input._
 import view._
 
 import java.awt._
@@ -61,6 +62,10 @@ object Main {
 		// Adjust the camera.
 		canvas.getCamera.setViewOffset(screenSizeX / 2, screenSizeY / 2)
 
+		// Set up input handling.
+		val mouseHandler = new MouseHandler
+		canvas.getCamera.addInputEventListener(mouseHandler.handler)
+
 		// Create a world for the physics simulation.
 		val world = new World
 
@@ -83,6 +88,8 @@ object Main {
 
 		while (true) {
 			val timeBefore = System.currentTimeMillis
+
+			Console.println(mouseHandler.wheelRotation)
 
 			missiles.foreach((missile) => {
 				if (missile._1.update) {
