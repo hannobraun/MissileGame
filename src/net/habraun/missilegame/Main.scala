@@ -61,26 +61,18 @@ object Main {
 		// Adjust the camera.
 		canvas.getCamera.setViewOffset(screenSizeX / 2, screenSizeY / 2)
 
-		// Configure the background color.
-		val background = PPath.createRectangle(-300, -300, 600, 600)
-		background.setPaint(Color.BLACK)
-		canvas.getLayer.addChild(background)
-
-		// Configure scanner display.
-		val scannerDisplay = new ScannerDisplay(scannerRadius, 10000)
-		canvas.getLayer.addChild(scannerDisplay.node)
-
 		// Create a world for the physics simulation.
 		val world = new World
 
 		// Create the player's ship.
 		val ship = new Ship
 		world.add(ship.body)
-		val shipView = new ShipView(ship)
-		scannerDisplay.node.addChild(shipView.node)
-
-		val missiles = new HashMap[Missile, MissileView]
 		
+		val missiles = new HashMap[Missile, MissileView]
+
+		// Initialize the display.
+		val view = new View(canvas.getLayer, ship)
+
 		// Make window visible.
 		frame.setVisible(true)
 		canvas.requestFocusInWindow
@@ -98,7 +90,7 @@ object Main {
 					missiles -= missile._1
 
 					SwingUtilities.invokeLater(new Runnable { def run {
-						scannerDisplay.node.removeChild(missile._2.node)
+						view.scannerDisplay.node.removeChild(missile._2.node)
 					}})
 				}
 			})
@@ -108,7 +100,7 @@ object Main {
 				missiles.foreach((missile) => {
 					missile._2.update(10000, ship.body.position)
 				})
-				scannerDisplay.update(1)
+				view.scannerDisplay.update(1)
 			}})
 
 			timer1 -= 1
@@ -125,7 +117,7 @@ object Main {
 				missiles.put(missile, missileView)
 
 				SwingUtilities.invokeLater(new Runnable { def run {
-					scannerDisplay.node.addChild(missileView.node)
+					view.scannerDisplay.node.addChild(missileView.node)
 				}})
 			}
 			if (timer2 <= 0) {
@@ -140,7 +132,7 @@ object Main {
 				missiles.put(missile, missileView)
 
 				SwingUtilities.invokeLater(new Runnable { def run {
-					scannerDisplay.node.addChild(missileView.node)
+					view.scannerDisplay.node.addChild(missileView.node)
 				}})
 			}
 			
