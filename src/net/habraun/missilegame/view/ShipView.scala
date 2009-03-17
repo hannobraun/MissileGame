@@ -36,8 +36,8 @@ class ShipView(ship: Ship) {
 		val point3 = new Point2D.Double(0, -0.577)
 		val node = PPath.createPolyline(Array(point1, point2, point3, point1))
 
-		node.setPaint(Color.YELLOW)
-		node.setStrokePaint(Color.YELLOW)
+		node.setPaint(Color.GREEN)
+		node.setStrokePaint(Color.GREEN)
 		node.setStroke(Main.defaultStroke)
 
 		node.setTransform(AffineTransform.getTranslateInstance(0, 0))
