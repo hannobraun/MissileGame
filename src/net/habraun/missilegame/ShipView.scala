@@ -40,15 +40,9 @@ class ShipView(ship: Ship) {
 		node.setStrokePaint(Color.YELLOW)
 		node.setStroke(Main.defaultStroke)
 
-		node
-	}
-
-
-
-	def update {
-		val x = ship.body.position.x * Main.scannerRadius / 10000 - (node.getWidth / 2)
-		val y = ship.body.position.y * Main.scannerRadius / 10000 - (node.getHeight / 2)
-		node.setTransform(AffineTransform.getTranslateInstance(x, y))
+		node.setTransform(AffineTransform.getTranslateInstance(0, 0))
 		node.scale(20)
+
+		node
 	}
 }

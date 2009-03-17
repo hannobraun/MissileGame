@@ -105,7 +105,6 @@ object Main {
 			world.step(timeStep)
 
 			SwingUtilities.invokeLater(new Runnable { def run {
-				shipView.update
 				missiles.foreach((missile) => {
 					missile._2.update
 				})
