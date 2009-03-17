@@ -29,6 +29,7 @@ import edu.umd.cs.piccolo.nodes._
 
 
 class View(layer: PLayer, ship: Ship) {
+	
 	// Background color
 	val background = PPath.createRectangle(-(View.backgroundSize / 2), -(View.backgroundSize / 2),
 			View.backgroundSize, View.backgroundSize)
