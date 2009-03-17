@@ -120,7 +120,7 @@ class ScannerDisplay(radius: Float, defaultRange: Double) extends ScannerDisplay
 
 	def update(zoom: Double) {
 		for ( i <- 0 until distances.length ) {
-			val distance = (defaultRange * (i + 1) / (distances.length + 1).toDouble).toInt
+			val distance = (defaultRange * (i + 1) / (distances.length + 1).toDouble / zoom).toInt
 			distances(i).setText(distance.toString)
 		}
 	}
