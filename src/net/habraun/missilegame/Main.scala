@@ -54,8 +54,8 @@ object Main {
 
 		// Configure the canvas where the scene graph is painted on.
 		val canvas = new PCanvas
-		//canvas.removeInputEventListener(canvas.getZoomEventHandler)
-		//canvas.removeInputEventListener(canvas.getPanEventHandler)
+		canvas.removeInputEventListener(canvas.getZoomEventHandler)
+		canvas.removeInputEventListener(canvas.getPanEventHandler)
 		frame.add(canvas)
 
 		// Adjust the camera.
