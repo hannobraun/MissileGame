@@ -87,7 +87,7 @@ class MissileView(missile: Missile, scannerRadius: Double) {
 		node.setTransform(AffineTransform.getTranslateInstance(x, y))
 		node.scale(15)
 
-		distanceNode.setText((missile.body.position - missile.target.position).length.toInt.toString)
+		distanceNode.setText((missile.body.position - center).length.toInt.toString)
 
 		speedNode.setText(missile.body.velocity.length.toInt.toString)
 
