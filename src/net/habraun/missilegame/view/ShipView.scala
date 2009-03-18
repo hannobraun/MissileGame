@@ -24,7 +24,7 @@ import java.awt._
 import java.awt.geom._
 
 import edu.umd.cs.piccolo.nodes._
-import net.habraun.scd._
+import net.habraun.sd._
 
 
 
