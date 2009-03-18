@@ -25,7 +25,7 @@ import net.habraun.sd.collision._
 
 
 
-class Missile(_target: Body) {
+class Missile(target: Body) {
 
 	val body = {
 		val body = new Body
@@ -43,11 +43,6 @@ class Missile(_target: Body) {
 
 
 
-
-	def target = _target
-
-
-
 	/**
 	 * Missile guidance logic.
 	 * Returns true if the missile explodes.
@@ -57,7 +52,7 @@ class Missile(_target: Body) {
 		val maxAccelerationForce = 5000.0
 		val maxManeuveringForce = 3000.0
 
-		val nominalHeading = (_target.position - body.position).normalize
+		val nominalHeading = (target.position - body.position).normalize
 		val deviatingVelocity = body.velocity.project(nominalHeading.orthogonal)
 		
 		val accelerationForce = nominalHeading * maxAccelerationForce
