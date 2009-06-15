@@ -69,19 +69,18 @@ object Main {
 
 		// Create a world for the physics simulation and a container for the game entities.
 		val world = new World
-		val entities = new HashMap[GameEntity, GameEntityView]
+		val entities = new HashSet[GameEntity]
 
 		// Create the player's ship.
 		val ship = new Ship
 		world.add(ship.body)
-		
+		entities += ship
 		
 		val entityViews = new HashSet[GameEntityView]
 
 		// Initialize the display.
 		val view = new View(canvas.getLayer, ship)
-
-		entities.put(ship, view.shipView)
+		entityViews += view.shipView
 
 		// Make window visible.
 		frame.setVisible(true)
@@ -103,12 +102,12 @@ object Main {
 
 			// Check if any missiles did explode. Remove exploded missilies from all data structures.
 			entities.foreach((entity) => {
-				if (!entity._1.update) {
-					world.remove(entity._1.body)
-					entities -= entity._1
+				if (!entity.update) {
+					world.remove(entity.body)
+					entities -= entity
 
 					SwingUtilities.invokeLater(new Runnable { def run {
-						val explosion = new Explosion(entity._1.body.position, 10, scannerRadius)
+						val explosion = new Explosion(entity.body.position, 10, scannerRadius)
 						entityViews.addEntry(explosion)
 						view.scannerDisplay.node.addChild(explosion.node)
 					}})
@@ -155,7 +154,7 @@ object Main {
 
 
 	def spawnMissile(target: Body, position: Vec2D, velocity: Vec2D, world: World,
-			entities: Map[GameEntity, GameEntityView], entityViews: Set[GameEntityView], view: View) {
+			entities: Set[GameEntity], entityViews: Set[GameEntityView], view: View) {
 		val missile = new Missile(target)
 		val missileView = new MissileView(missile, scannerRadius)
 
@@ -164,7 +163,7 @@ object Main {
 
 
 		world.add(missile.body)
-		entities.put(missile, missileView)
+		entities += missile
 		entityViews += missileView
 
 		SwingUtilities.invokeLater(new Runnable { def run {
