@@ -130,36 +130,13 @@ object Main {
 			timer1 -= 1
 			timer2 -= 1
 			if (timer1 <= 0) {
-				val missile = new Missile(ship.body)
-				val missileView = new MissileView(missile, scannerRadius)
-
-				missile.body.position = Vec2D(10, -10000)
-				missile.body.velocity = Vec2D(100, -100)
+				spawnMissile(ship.body, Vec2D(10, -10000), Vec2D(100, -100), world, missiles, view)
 				timer1 = 500
-
-				world.add(missile.body)
-				missiles.put(missile, missileView)
-
-				SwingUtilities.invokeLater(new Runnable { def run {
-					view.scannerDisplay.node.addChild(missileView.node)
-				}})
 			}
 			if (timer2 <= 0) {
-				val missile = new Missile(ship.body)
-				val missileView = new MissileView(missile, scannerRadius)
-
-				missile.body.position = Vec2D(-10, -10000)
-				missile.body.velocity = Vec2D(-100, -100)
+				spawnMissile(ship.body, Vec2D(-10, -10000), Vec2D(-100, -100), world, missiles, view)
 				timer2 = 500
-
-				world.add(missile.body)
-				missiles.put(missile, missileView)
-
-				SwingUtilities.invokeLater(new Runnable { def run {
-					view.scannerDisplay.node.addChild(missileView.node)
-				}})
 			}
-			
 
 			val delta = System.currentTimeMillis - timeBefore
 			val missing = (timeStep * 1000).toLong - delta
@@ -167,5 +144,24 @@ object Main {
 				Thread.sleep(missing)
 			}
 		}
+	}
+
+
+
+	def spawnMissile(target: Body, position: Vec2D, velocity: Vec2D, world: World,
+			missiles: Map[Missile, MissileView], view: View) {
+		val missile = new Missile(target)
+		val missileView = new MissileView(missile, scannerRadius)
+
+		missile.body.position = position
+		missile.body.velocity = velocity
+
+
+		world.add(missile.body)
+		missiles.put(missile, missileView)
+
+		SwingUtilities.invokeLater(new Runnable { def run {
+			view.scannerDisplay.node.addChild(missileView.node)
+		}})
 	}
 }
