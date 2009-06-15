@@ -125,7 +125,7 @@ object Main {
 				view.scannerDisplay.update(zoom)
 
 				explosions.foreach((explosion) => {
-					if (explosion.update(10000 / zoom, ship.body.position)) {
+					if (!explosion.update(10000 / zoom, ship.body.position)) {
 						explosions.removeEntry(explosion)
 						view.scannerDisplay.node.removeChild(explosion.node)
 					}

@@ -63,7 +63,7 @@ class Explosion(position: Vec2D, diameter: Int, scannerRadius: Double)
 		node.setScale(scale - (1.0 / Explosion.timeToLive))
 		ttl -= 1
 
-		ttl <= 0
+		ttl > 0
 	}
 }
 
