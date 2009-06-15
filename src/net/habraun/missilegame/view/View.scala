@@ -63,6 +63,25 @@ class View(layer: PLayer, ship: Ship) {
 			scannerDisplay.node.addChild(view.node)
 		}
 	}
+
+
+
+	/**
+	 * Updates the entity views.
+	 */
+
+	def update(zoom: Double) {
+		updateSG {
+			scannerDisplay.update(zoom)
+
+			entityViews.foreach((entityView) => {
+				if (!entityView.update(10000 / zoom, ship.body.position)) {
+					entityViews.removeEntry(entityView)
+					scannerDisplay.node.removeChild(entityView.node)
+				}
+			})
+		}
+	}
 }
 
 

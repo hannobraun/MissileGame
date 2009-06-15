@@ -97,7 +97,7 @@ object Main {
 			zoom = Math.max(0.01, zoom)
 			zoom = Math.min(5, zoom)
 
-			// Check if any missiles did explode. Remove exploded missilies from all data structures.
+			// Update game entities.
 			entities.foreach((entity) => {
 				if (!entity.update) {
 					world.remove(entity.body)
@@ -110,16 +110,7 @@ object Main {
 			world.step(timeStep)
 
 			// Update the display.
-			SwingUtilities.invokeLater(new Runnable { def run {
-				view.scannerDisplay.update(zoom)
-
-				view.entityViews.foreach((entityView) => {
-					if (!entityView.update(10000 / zoom, ship.body.position)) {
-						view.entityViews.removeEntry(entityView)
-						view.scannerDisplay.node.removeChild(entityView.node)
-					}
-				})
-			}})
+			view.update(zoom)
 
 			// Spawn a missile if a timer has run out.
 			timer1 -= 1
