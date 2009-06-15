@@ -34,4 +34,10 @@ class Ship extends GameEntity {
 
 		body
 	}
+
+
+
+	def update = true
+
+	def active = true
 }

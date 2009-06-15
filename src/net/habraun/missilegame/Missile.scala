@@ -37,18 +37,17 @@ class Missile(target: Body) extends GameEntity {
 
 
 
-	private[this] var _killed = false
+	private[this] var killed = false
 	
-	def killed = _killed
+	def active = !killed
 
 
 
 	/**
 	 * Missile guidance logic.
-	 * Returns true if the missile explodes.
 	 */
 
-	def update: Boolean = {
+	def update = {
 		val maxAccelerationForce = 5000.0
 		val maxManeuveringForce = 3000.0
 
@@ -71,8 +70,8 @@ class Missile(target: Body) extends GameEntity {
 
 		val targetRadius = target.shape.asInstanceOf[Circle].radius
 		val missileRadius = body.shape.asInstanceOf[Circle].radius
-		_killed = (target.position - body.position).length - targetRadius - missileRadius <= 10
+		killed = (target.position - body.position).length - targetRadius - missileRadius <= 10
 
-		_killed
+		!killed
 	}
 }

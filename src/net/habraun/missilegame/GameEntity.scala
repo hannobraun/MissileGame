@@ -26,5 +26,26 @@ import net.habraun.sd._
 
 abstract class GameEntity {
 
+	/**
+	 * Returns the body that represents the entity in the physics simulation.
+	 */
+
 	def body: Body
+
+
+
+	/**
+	 * Updates the entity.
+	 * Returns true if the entity remains active, false if it doesn't.
+	 */
+
+	def update: Boolean
+
+
+
+	/**
+	 * Returns true if the entity is active, false otherwise.
+	 */
+
+	def active: Boolean
 }

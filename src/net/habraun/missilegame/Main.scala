@@ -100,7 +100,7 @@ object Main {
 
 			// Check if any missiles did explode. Remove exploded missilies from all data structures.
 			missiles.foreach((missile) => {
-				if (missile._1.update) {
+				if (!missile._1.update) {
 					world.remove(missile._1.body)
 					missiles -= missile._1
 
