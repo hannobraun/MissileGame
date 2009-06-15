@@ -90,9 +90,9 @@ object Main {
 		// Stuff for managing defensive missiles
 		val launchedMissiles = new HashMap[GameEntity, GameEntity]
 		var tube = 0
-		val tubeData = Array((Vec2D(-200, 0), Vec2D(-50, 0)),
-							 (Vec2D(0, -200), Vec2D(0, -50)),
-							 (Vec2D(200, 0), Vec2D(50, 0)))
+		val tubeData = Array((Vec2D(-200, 0), Vec2D(-100, 0)),
+							 (Vec2D(0, -200), Vec2D(0, -100)),
+							 (Vec2D(200, 0), Vec2D(100, 0)))
 
 
 		var zoom = 1.0
