@@ -25,7 +25,7 @@ import net.habraun.sd.collision._
 
 
 
-class Missile(target: Body) {
+class Missile(target: Body) extends GameEntity {
 
 	val body = {
 		val body = new Body

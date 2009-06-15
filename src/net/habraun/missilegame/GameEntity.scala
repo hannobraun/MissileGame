@@ -21,17 +21,10 @@ package net.habraun.missilegame
 
 
 import net.habraun.sd._
-import net.habraun.sd.collision._
 
 
 
-class Ship extends GameEntity {
+abstract class GameEntity {
 
-	val body = {
-		val body = new Body
-		body.mass = 100000000
-		body.shape = Circle(150)
-
-		body
-	}
+	def body: Body
 }
