@@ -84,8 +84,8 @@ object Main {
 		canvas.requestFocusInWindow
 
 		// Missile spawn timers.
-		var timer1 = 250
-		var timer2 = 0
+		var attackTimer1 = 250
+		var attackTimer2 = 0
 
 		var zoom = 1.0
 
@@ -113,15 +113,15 @@ object Main {
 			view.update(zoom)
 
 			// Spawn a missile if a timer has run out.
-			timer1 -= 1
-			timer2 -= 1
-			if (timer1 <= 0) {
+			attackTimer1 -= 1
+			attackTimer2 -= 1
+			if (attackTimer1 <= 0) {
 				spawnMissile(ship.body, Vec2D(10, -10000), Vec2D(100, -100), world, entities, view)
-				timer1 = 500
+				attackTimer1 = 500
 			}
-			if (timer2 <= 0) {
+			if (attackTimer2 <= 0) {
 				spawnMissile(ship.body, Vec2D(-10, -10000), Vec2D(-100, -100), world, entities, view)
-				timer2 = 500
+				attackTimer2 = 500
 			}
 
 			val delta = System.currentTimeMillis - timeBefore
