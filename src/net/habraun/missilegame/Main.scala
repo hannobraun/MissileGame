@@ -102,12 +102,7 @@ object Main {
 				if (!entity.update) {
 					world.remove(entity.body)
 					entities -= entity
-
-					SwingUtilities.invokeLater(new Runnable { def run {
-						val explosion = new Explosion(entity.body.position, 10, scannerRadius)
-						view.entityViews.addEntry(explosion)
-						view.scannerDisplay.node.addChild(explosion.node)
-					}})
+					view.addView(new Explosion(entity.body.position, 10, scannerRadius))
 				}
 			})
 
