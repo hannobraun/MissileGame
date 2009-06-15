@@ -20,31 +20,25 @@ package net.habraun.missilegame.view
 
 
 
-import java.awt._
-import java.awt.geom._
-
-import edu.umd.cs.piccolo.nodes._
+import edu.umd.cs.piccolo._
 import net.habraun.sd.math._
 
 
 
-class ShipView(ship: Ship) extends GameEntityView(ship, 0.0) {
+abstract class GameEntityView(entity: GameEntity, scannerRadius: Double) {
 
-	val node = {
-		val point1 = new Point2D.Double(-0.5, 0.289)
-		val point2 = new Point2D.Double(0.5, 0.289)
-		val point3 = new Point2D.Double(0, -0.577)
-		val node = PPath.createPolyline(Array(point1, point2, point3, point1))
+	/**
+	 * Returns the Piccolo2D scene graph node this object manages.
+	 */
 
-		node.setPaint(Color.GREEN)
-		node.setStrokePaint(Color.GREEN)
-		node.setStroke(Main.defaultStroke)
+	def node: PNode
 
-		node.setTransform(AffineTransform.getTranslateInstance(0, 0))
-		node.scale(20)
 
-		node
-	}
 
-	def update(scanRange: Double, center: Vec2D) = true
+	/**
+	 * Updates the node.
+	 * Returns true if the view remains active, false if it should not be displayed any longer.
+	 */
+
+	def update(scanRange: Double, center: Vec2D): Boolean
 }

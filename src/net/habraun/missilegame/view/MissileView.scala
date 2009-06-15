@@ -29,7 +29,7 @@ import net.habraun.sd.math._
 
 
 
-class MissileView(missile: Missile, scannerRadius: Double) {
+class MissileView(missile: Missile, scannerRadius: Double) extends GameEntityView(missile, scannerRadius) {
 
 	val node = new PNode
 	
@@ -81,7 +81,7 @@ class MissileView(missile: Missile, scannerRadius: Double) {
 
 
 
-	def update(scanRange: Double, center: Vec2D) {
+	def update(scanRange: Double, center: Vec2D) = {
 		val x = (missile.body.position.x - center.x) * scannerRadius / scanRange
 		val y = (missile.body.position.y - center.y) * scannerRadius / scanRange
 		node.setTransform(AffineTransform.getTranslateInstance(x, y))
@@ -96,5 +96,7 @@ class MissileView(missile: Missile, scannerRadius: Double) {
 		val angle = Math.toDegrees(Math.acos((r * v) / (r.length * v.length)))
 		val orientation = if (v.x < 0) angle else 360 - angle
 		orientationNode.setText(orientation.toInt.toString)
+
+		true
 	}
 }

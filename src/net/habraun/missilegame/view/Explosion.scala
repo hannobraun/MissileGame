@@ -29,7 +29,8 @@ import net.habraun.sd.math._
 
 
 
-class Explosion(position: Vec2D, diameter: Int, scannerRadius: Double) {
+class Explosion(position: Vec2D, diameter: Int, scannerRadius: Double)
+		extends GameEntityView(null, scannerRadius) {
 
 	val node = {
 		val node = new PNode
