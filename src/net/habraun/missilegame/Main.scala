@@ -67,18 +67,21 @@ object Main {
 		val mouseHandler = new MouseHandler
 		canvas.getCamera.addInputEventListener(mouseHandler.handler)
 
-		// Create a world for the physics simulation.
+		// Create a world for the physics simulation and a container for the game entities.
 		val world = new World
+		val entities = new HashMap[GameEntity, GameEntityView]
 
 		// Create the player's ship.
 		val ship = new Ship
 		world.add(ship.body)
 		
-		val missiles = new HashMap[Missile, MissileView]
+		
 		val explosions = new HashSet[Explosion]
 
 		// Initialize the display.
 		val view = new View(canvas.getLayer, ship)
+
+		entities.put(ship, view.shipView)
 
 		// Make window visible.
 		frame.setVisible(true)
@@ -99,15 +102,15 @@ object Main {
 			zoom = Math.min(5, zoom)
 
 			// Check if any missiles did explode. Remove exploded missilies from all data structures.
-			missiles.foreach((missile) => {
-				if (!missile._1.update) {
-					world.remove(missile._1.body)
-					missiles -= missile._1
+			entities.foreach((entity) => {
+				if (!entity._1.update) {
+					world.remove(entity._1.body)
+					entities -= entity._1
 
 					SwingUtilities.invokeLater(new Runnable { def run {
-						view.scannerDisplay.node.removeChild(missile._2.node)
+						view.scannerDisplay.node.removeChild(entity._2.node)
 
-						val explosion = new Explosion(missile._1.body.position, 10, scannerRadius)
+						val explosion = new Explosion(entity._1.body.position, 10, scannerRadius)
 						explosions.addEntry(explosion)
 						view.scannerDisplay.node.addChild(explosion.node)
 					}})
@@ -119,8 +122,8 @@ object Main {
 
 			// Update the display.
 			SwingUtilities.invokeLater(new Runnable { def run {
-				missiles.foreach((missile) => {
-					missile._2.update(10000 / zoom, ship.body.position)
+				entities.foreach((entity) => {
+					entity._2.update(10000 / zoom, ship.body.position)
 				})
 				view.scannerDisplay.update(zoom)
 
@@ -136,11 +139,11 @@ object Main {
 			timer1 -= 1
 			timer2 -= 1
 			if (timer1 <= 0) {
-				spawnMissile(ship.body, Vec2D(10, -10000), Vec2D(100, -100), world, missiles, view)
+				spawnMissile(ship.body, Vec2D(10, -10000), Vec2D(100, -100), world, entities, view)
 				timer1 = 500
 			}
 			if (timer2 <= 0) {
-				spawnMissile(ship.body, Vec2D(-10, -10000), Vec2D(-100, -100), world, missiles, view)
+				spawnMissile(ship.body, Vec2D(-10, -10000), Vec2D(-100, -100), world, entities, view)
 				timer2 = 500
 			}
 
@@ -155,7 +158,7 @@ object Main {
 
 
 	def spawnMissile(target: Body, position: Vec2D, velocity: Vec2D, world: World,
-			missiles: Map[Missile, MissileView], view: View) {
+			entities: Map[GameEntity, GameEntityView], view: View) {
 		val missile = new Missile(target)
 		val missileView = new MissileView(missile, scannerRadius)
 
@@ -164,7 +167,7 @@ object Main {
 
 
 		world.add(missile.body)
-		missiles.put(missile, missileView)
+		entities.put(missile, missileView)
 
 		SwingUtilities.invokeLater(new Runnable { def run {
 			view.scannerDisplay.node.addChild(missileView.node)
