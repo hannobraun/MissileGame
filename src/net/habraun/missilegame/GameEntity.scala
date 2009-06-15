@@ -24,7 +24,7 @@ import net.habraun.sd._
 
 
 
-abstract class GameEntity {
+trait GameEntity {
 
 	/**
 	 * Returns the body that represents the entity in the physics simulation.
