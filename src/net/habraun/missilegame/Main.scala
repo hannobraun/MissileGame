@@ -87,6 +87,9 @@ object Main {
 		var attackTimer1 = 250
 		var attackTimer2 = 0
 
+		// Map for tracking launched missiles.
+		val launchedMissiles = new HashMap[GameEntity, GameEntity]
+
 		var zoom = 1.0
 
 		while (true) {
@@ -124,6 +127,16 @@ object Main {
 				attackTimer2 = 500
 			}
 
+			// Launch defensive missiles if something comes near the ship.
+			entities.foreach((entity) => {
+				if ((entity.body.position - ship.body.position).length < 5000 && entity != ship
+					&& !launchedMissiles.contains(entity) && !launchedMissiles.values.contains(entity)) {
+					val missile = spawnMissile(entity.body, Vec2D(0, -200), Vec2D(0, 0), world, entities,
+											   view)
+					launchedMissiles.put(missile, entity)
+				}
+			})
+
 			val delta = System.currentTimeMillis - timeBefore
 			val missing = (timeStep * 1000).toLong - delta
 			if (missing > 0) {
@@ -135,7 +148,7 @@ object Main {
 
 
 	def spawnMissile(target: Body, position: Vec2D, velocity: Vec2D, world: World, entities: Set[GameEntity],
-					 view: View) {
+					 view: View): Missile = {
 		val missile = new Missile(target)
 		val missileView = new MissileView(missile, scannerRadius)
 
@@ -146,5 +159,7 @@ object Main {
 		entities += missile
 
 		view.addView(missileView)
+
+		missile
 	}
 }
