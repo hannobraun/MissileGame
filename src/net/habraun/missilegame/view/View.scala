@@ -22,6 +22,7 @@ package net.habraun.missilegame.view
 
 import java.awt._
 import javax.swing._
+import scala.collection.mutable._
 
 import edu.umd.cs.piccolo._
 import edu.umd.cs.piccolo.nodes._
@@ -40,9 +41,13 @@ class View(layer: PLayer, ship: Ship) {
 	val scannerDisplay = new ScannerDisplay(View.scannerRadius, View.defaultScanRange)
 	layer.addChild(scannerDisplay.node)
 
+	// Data structure containing all entity views.
+	val entityViews = new HashSet[GameEntityView]
+
 	// Player ship
 	val shipView = new ShipView(ship)
 	scannerDisplay.node.addChild(shipView.node)
+	entityViews += shipView
 }
 
 

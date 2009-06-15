@@ -75,12 +75,9 @@ object Main {
 		val ship = new Ship
 		world.add(ship.body)
 		entities += ship
-		
-		val entityViews = new HashSet[GameEntityView]
 
 		// Initialize the display.
 		val view = new View(canvas.getLayer, ship)
-		entityViews += view.shipView
 
 		// Make window visible.
 		frame.setVisible(true)
@@ -108,7 +105,7 @@ object Main {
 
 					SwingUtilities.invokeLater(new Runnable { def run {
 						val explosion = new Explosion(entity.body.position, 10, scannerRadius)
-						entityViews.addEntry(explosion)
+						view.entityViews.addEntry(explosion)
 						view.scannerDisplay.node.addChild(explosion.node)
 					}})
 				}
@@ -121,9 +118,9 @@ object Main {
 			SwingUtilities.invokeLater(new Runnable { def run {
 				view.scannerDisplay.update(zoom)
 
-				entityViews.foreach((entityView) => {
+				view.entityViews.foreach((entityView) => {
 					if (!entityView.update(10000 / zoom, ship.body.position)) {
-						entityViews.removeEntry(entityView)
+						view.entityViews.removeEntry(entityView)
 						view.scannerDisplay.node.removeChild(entityView.node)
 					}
 				})
@@ -133,13 +130,11 @@ object Main {
 			timer1 -= 1
 			timer2 -= 1
 			if (timer1 <= 0) {
-				spawnMissile(ship.body, Vec2D(10, -10000), Vec2D(100, -100), world, entities, entityViews,
-						view)
+				spawnMissile(ship.body, Vec2D(10, -10000), Vec2D(100, -100), world, entities, view)
 				timer1 = 500
 			}
 			if (timer2 <= 0) {
-				spawnMissile(ship.body, Vec2D(-10, -10000), Vec2D(-100, -100), world, entities, entityViews,
-						view)
+				spawnMissile(ship.body, Vec2D(-10, -10000), Vec2D(-100, -100), world, entities, view)
 				timer2 = 500
 			}
 
@@ -154,7 +149,7 @@ object Main {
 
 
 	def spawnMissile(target: Body, position: Vec2D, velocity: Vec2D, world: World,
-			entities: Set[GameEntity], entityViews: Set[GameEntityView], view: View) {
+			entities: Set[GameEntity], view: View) {
 		val missile = new Missile(target)
 		val missileView = new MissileView(missile, scannerRadius)
 
@@ -164,7 +159,7 @@ object Main {
 
 		world.add(missile.body)
 		entities += missile
-		entityViews += missileView
+		view.entityViews += missileView
 
 		SwingUtilities.invokeLater(new Runnable { def run {
 			view.scannerDisplay.node.addChild(missileView.node)
