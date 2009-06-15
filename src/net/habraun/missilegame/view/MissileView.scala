@@ -97,6 +97,6 @@ class MissileView(missile: Missile, scannerRadius: Double) extends GameEntityVie
 		val orientation = if (v.x < 0) angle else 360 - angle
 		orientationNode.setText(orientation.toInt.toString)
 
-		true
+		missile.active
 	}
 }
