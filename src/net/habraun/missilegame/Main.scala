@@ -87,8 +87,13 @@ object Main {
 		var attackTimer1 = 250
 		var attackTimer2 = 0
 
-		// Map for tracking launched missiles.
+		// Stuff for managing defensive missiles
 		val launchedMissiles = new HashMap[GameEntity, GameEntity]
+		var tube = 0
+		val tubeData = Array((Vec2D(-200, 0), Vec2D(-50, 0)),
+							 (Vec2D(0, -200), Vec2D(0, -50)),
+							 (Vec2D(200, 0), Vec2D(50, 0)))
+
 
 		var zoom = 1.0
 
@@ -129,11 +134,16 @@ object Main {
 
 			// Launch defensive missiles if something comes near the ship.
 			entities.foreach((entity) => {
-				if ((entity.body.position - ship.body.position).length < 5000 && entity != ship
+				if ((entity.body.position - ship.body.position).length < 7500 && entity != ship
 					&& !launchedMissiles.contains(entity) && !launchedMissiles.values.contains(entity)) {
-					val missile = spawnMissile(entity.body, Vec2D(0, -200), Vec2D(0, 0), world, entities,
-											   view)
+					val position = tubeData(tube)._1
+					val velocity = tubeData(tube)._2
+					val missile = spawnMissile(entity.body, position, velocity, world, entities, view)
+
 					launchedMissiles.put(missile, entity)
+
+					tube += 1
+					if (tube > 2) tube = 0
 				}
 			})
 
