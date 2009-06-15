@@ -93,10 +93,12 @@ object Main {
 		while (true) {
 			val timeBefore = System.currentTimeMillis
 
+			// Adjust zoom according to mouse wheel rotation.
 			zoom += -mouseHandler.wheelRotation * 0.1
 			zoom = Math.max(0.01, zoom)
 			zoom = Math.min(5, zoom)
 
+			// Check if any missiles did explode. Remove exploded missilies from all data structures.
 			missiles.foreach((missile) => {
 				if (missile._1.update) {
 					world.remove(missile._1.body)
@@ -111,8 +113,11 @@ object Main {
 					}})
 				}
 			})
+
+			// Step the physics simulation.
 			world.step(timeStep)
 
+			// Update the display.
 			SwingUtilities.invokeLater(new Runnable { def run {
 				missiles.foreach((missile) => {
 					missile._2.update(10000 / zoom, ship.body.position)
@@ -127,6 +132,7 @@ object Main {
 				})
 			}})
 
+			// Spawn a missile if a timer has run out.
 			timer1 -= 1
 			timer2 -= 1
 			if (timer1 <= 0) {
