@@ -20,6 +20,8 @@ package net.habraun.missilegame.view
 
 
 
+import View._
+
 import java.awt._
 import javax.swing._
 import scala.collection.mutable._
@@ -46,8 +48,21 @@ class View(layer: PLayer, ship: Ship) {
 
 	// Player ship
 	val shipView = new ShipView(ship)
-	scannerDisplay.node.addChild(shipView.node)
-	entityViews += shipView
+	addView(shipView)
+
+
+
+	/**
+	 * Adds the given view to the scene graph.
+	 */
+
+	def addView(view: GameEntityView) {
+		entityViews.addEntry(view)
+
+		updateSG {
+			scannerDisplay.node.addChild(view.node)
+		}
+	}
 }
 
 
@@ -57,4 +72,12 @@ object View {
 	val scannerRadius = 230
 
 	val defaultScanRange = 10000
+
+	def updateSG(f: => Unit) {
+		SwingUtilities.invokeAndWait(new Runnable {
+			def run {
+				f
+			}
+		})
+	}
 }

@@ -148,21 +148,17 @@ object Main {
 
 
 
-	def spawnMissile(target: Body, position: Vec2D, velocity: Vec2D, world: World,
-			entities: Set[GameEntity], view: View) {
+	def spawnMissile(target: Body, position: Vec2D, velocity: Vec2D, world: World, entities: Set[GameEntity],
+					 view: View) {
 		val missile = new Missile(target)
 		val missileView = new MissileView(missile, scannerRadius)
 
 		missile.body.position = position
 		missile.body.velocity = velocity
 
-
 		world.add(missile.body)
 		entities += missile
-		view.entityViews += missileView
 
-		SwingUtilities.invokeLater(new Runnable { def run {
-			view.scannerDisplay.node.addChild(missileView.node)
-		}})
+		view.addView(missileView)
 	}
 }
