@@ -137,9 +137,8 @@ object Main {
 			// Launch defensive missiles if something comes near the ship.
 			entities.foreach((entity) => {
 				if ((entity.body.position - ship.body.position).length < 7500 && entity != ship
-					&& !launchedMissiles.contains(entity) && !launchedMissiles.values.contains(entity)) {
-					val position = tubeData(tube)._1
-					val velocity = tubeData(tube)._2
+						&& !launchedMissiles.contains(entity) && !launchedMissiles.values.contains(entity)) {
+					val (position, velocity) = tubeData(tube)
 					val target = () => if (entity.active) Some(entity.body) else None
 					val missile = spawnMissile(target, position, velocity, world, entities, view, false)
 
