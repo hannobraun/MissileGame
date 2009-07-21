@@ -25,7 +25,7 @@ import net.habraun.sd.collision._
 
 
 
-class Missile(target: => Option[Body]) extends GameEntity {
+class Missile(target: () => Option[Body]) extends GameEntity {
 
 	val body = {
 		val body = new Body
@@ -48,7 +48,7 @@ class Missile(target: => Option[Body]) extends GameEntity {
 	 */
 
 	def update = {
-		for (t <- target) {
+		for (t <- target()) {
 			val maxAccelerationForce = 5000.0
 			val maxManeuveringForce = 3000.0
 
