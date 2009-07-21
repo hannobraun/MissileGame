@@ -138,7 +138,7 @@ object Main {
 			// Launch defensive missiles if something comes near the ship.
 			if (cooldownTimer > 0) cooldownTimer -= 1
 			entities.foreach((entity) => {
-				if ((entity.body.position - ship.body.position).length < 7500 && entity != ship
+				if ((entity.body.position - ship.body.position).length < 9000 && entity != ship
 						&& !launchedMissiles.contains(entity) && !launchedMissiles.values.contains(entity)
 						&& cooldownTimer == 0) {
 					val (position, velocity) = tubeData(tube)
