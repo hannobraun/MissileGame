@@ -24,5 +24,5 @@ import net.habraun.sd._
 
 
 
-class OffensiveMissile(target: () => Option[Body], hostile: Boolean)
+class OffensiveMissile(target: () => Option[GameEntity], hostile: Boolean)
 		extends Missile(target, hostile, 5000.0, 3000.0)

@@ -40,4 +40,6 @@ class Ship extends GameEntity {
 	def update = true
 
 	def active = true
+
+	def damage(amount: Int) {}
 }

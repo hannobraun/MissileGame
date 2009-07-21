@@ -124,12 +124,12 @@ object Main {
 			attackTimer1 -= 1
 			attackTimer2 -= 1
 			if (attackTimer1 <= 0) {
-				spawnOffensiveMissile(() => Some(ship.body), Vec2D(10, -10000), Vec2D(100, -100), world,
+				spawnOffensiveMissile(() => Some(ship), Vec2D(10, -10000), Vec2D(100, -100), world,
 						entities, view, true)
 				attackTimer1 = 500
 			}
 			if (attackTimer2 <= 0) {
-				spawnOffensiveMissile(() => Some(ship.body), Vec2D(-10, -10000), Vec2D(-100, -100), world,
+				spawnOffensiveMissile(() => Some(ship), Vec2D(-10, -10000), Vec2D(-100, -100), world,
 						entities, view, true)
 				attackTimer2 = 500
 			}
@@ -139,7 +139,7 @@ object Main {
 				if ((entity.body.position - ship.body.position).length < 7500 && entity != ship
 						&& !launchedMissiles.contains(entity) && !launchedMissiles.values.contains(entity)) {
 					val (position, velocity) = tubeData(tube)
-					val target = () => if (entity.active) Some(entity.body) else None
+					val target = () => if (entity.active) Some(entity) else None
 					val missile = spawnDefensiveMissile(target, position, velocity, world, entities, view,
 							false)
 
@@ -160,8 +160,8 @@ object Main {
 
 
 
-	def spawnOffensiveMissile(target: () => Option[Body], position: Vec2D, velocity: Vec2D, world: World,
-					 entities: Set[GameEntity], view: View, hostile: Boolean): Missile = {
+	def spawnOffensiveMissile(target: () => Option[GameEntity], position: Vec2D, velocity: Vec2D,
+			world: World, entities: Set[GameEntity], view: View, hostile: Boolean): Missile = {
 		val missile = new OffensiveMissile(target, hostile)
 		val missileView = new MissileView(missile, scannerRadius)
 
@@ -178,8 +178,8 @@ object Main {
 
 
 
-	def spawnDefensiveMissile(target: () => Option[Body], position: Vec2D, velocity: Vec2D, world: World,
-					 entities: Set[GameEntity], view: View, hostile: Boolean): Missile = {
+	def spawnDefensiveMissile(target: () => Option[GameEntity], position: Vec2D, velocity: Vec2D,
+			world: World, entities: Set[GameEntity], view: View, hostile: Boolean): Missile = {
 		val missile = new DefensiveMissile(target, hostile)
 		val missileView = new MissileView(missile, scannerRadius)
 

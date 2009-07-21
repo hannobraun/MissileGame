@@ -48,4 +48,12 @@ trait GameEntity {
 	 */
 
 	def active: Boolean
+
+
+
+	/**
+	 * Applies damage to the entity.
+	 */
+
+	def damage(amount: Int)
 }

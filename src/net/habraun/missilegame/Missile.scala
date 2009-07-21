@@ -25,7 +25,7 @@ import net.habraun.sd.collision._
 
 
 
-abstract class Missile(target: () => Option[Body], val hostile: Boolean, maxAccelerationForce: Double,
+abstract class Missile(target: () => Option[GameEntity], val hostile: Boolean, maxAccelerationForce: Double,
 		maxManeuveringForce: Double) extends GameEntity {
 
 	val body = {
@@ -44,13 +44,21 @@ abstract class Missile(target: () => Option[Body], val hostile: Boolean, maxAcce
 
 
 
+	private var damage = 0
+
+	def damage(amount: Int) {
+		damage += amount
+	}
+
+
+
 	/**
 	 * Missile guidance logic.
 	 */
 
 	def update = {
 		for (t <- target()) {
-			val nominalHeading = (t.position - body.position).normalize
+			val nominalHeading = (t.body.position - body.position).normalize
 			val deviatingVelocity = body.velocity.project(nominalHeading.orthogonal)
 		
 			val accelerationForce = nominalHeading * maxAccelerationForce
@@ -67,12 +75,15 @@ abstract class Missile(target: () => Option[Body], val hostile: Boolean, maxAcce
 			body.applyForce(accelerationForce)
 			body.applyForce(maneuveringForce)
 
-			val targetRadius = t.shape.asInstanceOf[Circle].radius
+			val targetRadius = t.body.shape.asInstanceOf[Circle].radius
 			val missileRadius = body.shape.asInstanceOf[Circle].radius
-			killed = (t.position - body.position).length - targetRadius - missileRadius <= 50
+			if ((t.body.position - body.position).length - targetRadius - missileRadius <= 50) {
+				killed = true
+				t.damage(1)
+			}
 		}
 
-		if (target() == None)
+		if (target() == None || damage >= 1)
 			killed = true
 
 		!killed
