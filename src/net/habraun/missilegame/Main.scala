@@ -125,12 +125,12 @@ object Main {
 			attackTimer2 -= 1
 			if (attackTimer1 <= 0) {
 				spawnMissile(() => Some(ship.body), Vec2D(10, -10000), Vec2D(100, -100), world, entities,
-						view)
+							 view, true)
 				attackTimer1 = 500
 			}
 			if (attackTimer2 <= 0) {
 				spawnMissile(() => Some(ship.body), Vec2D(-10, -10000), Vec2D(-100, -100), world, entities,
-						view)
+							 view, true)
 				attackTimer2 = 500
 			}
 
@@ -141,7 +141,7 @@ object Main {
 					val position = tubeData(tube)._1
 					val velocity = tubeData(tube)._2
 					val target = () => if (entity.active) Some(entity.body) else None
-					val missile = spawnMissile(target, position, velocity, world, entities, view)
+					val missile = spawnMissile(target, position, velocity, world, entities, view, false)
 
 					launchedMissiles.put(missile, entity)
 
@@ -160,9 +160,9 @@ object Main {
 
 
 
-	def spawnMissile(target: () => Option[Body], position: Vec2D, velocity: Vec2D, world: World, entities: Set[GameEntity],
-					 view: View): Missile = {
-		val missile = new Missile(target)
+	def spawnMissile(target: () => Option[Body], position: Vec2D, velocity: Vec2D, world: World,
+					 entities: Set[GameEntity], view: View, hostile: Boolean): Missile = {
+		val missile = new Missile(target, hostile)
 		val missileView = new MissileView(missile, scannerRadius)
 
 		missile.body.position = position

@@ -39,8 +39,10 @@ class MissileView(missile: Missile, scannerRadius: Double) extends GameEntityVie
 		val point3 = new Point2D.Double(0, -0.666)
 		val node = PPath.createPolyline(Array(point1, point2, point3, point1))
 
-		node.setPaint(Color.RED)
-		node.setStrokePaint(Color.RED)
+		val color = if (missile.hostile) Color.RED else Color.GREEN
+
+		node.setPaint(color)
+		node.setStrokePaint(color)
 		node.setStroke(Main.defaultStroke)
 
 		node.setRotation(-Math.Pi / 4)
