@@ -159,7 +159,7 @@ object Main {
 
 	def spawnMissile(target: Body, position: Vec2D, velocity: Vec2D, world: World, entities: Set[GameEntity],
 					 view: View): Missile = {
-		val missile = new Missile(target)
+		val missile = new Missile(Some(target))
 		val missileView = new MissileView(missile, scannerRadius)
 
 		missile.body.position = position

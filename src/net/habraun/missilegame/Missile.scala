@@ -25,7 +25,7 @@ import net.habraun.sd.collision._
 
 
 
-class Missile(target: Body) extends GameEntity {
+class Missile(target: => Option[Body]) extends GameEntity {
 
 	val body = {
 		val body = new Body
@@ -37,7 +37,7 @@ class Missile(target: Body) extends GameEntity {
 
 
 
-	private[this] var killed = false
+	private var killed = false
 	
 	def active = !killed
 
@@ -48,29 +48,31 @@ class Missile(target: Body) extends GameEntity {
 	 */
 
 	def update = {
-		val maxAccelerationForce = 5000.0
-		val maxManeuveringForce = 3000.0
+		for (t <- target) {
+			val maxAccelerationForce = 5000.0
+			val maxManeuveringForce = 3000.0
 
-		val nominalHeading = (target.position - body.position).normalize
-		val deviatingVelocity = body.velocity.project(nominalHeading.orthogonal)
+			val nominalHeading = (t.position - body.position).normalize
+			val deviatingVelocity = body.velocity.project(nominalHeading.orthogonal)
 		
-		val accelerationForce = nominalHeading * maxAccelerationForce
-		val maneuveringForce = {
-			val correctionForce = -deviatingVelocity * body.mass / Main.timeStep
-			if (correctionForce * correctionForce <= maxManeuveringForce) {
-				correctionForce
+			val accelerationForce = nominalHeading * maxAccelerationForce
+			val maneuveringForce = {
+				val correctionForce = -deviatingVelocity * body.mass / Main.timeStep
+				if (correctionForce * correctionForce <= maxManeuveringForce) {
+					correctionForce
+				}
+				else {
+					correctionForce * (maxManeuveringForce / correctionForce.length)
+				}
 			}
-			else {
-				correctionForce * (maxManeuveringForce / correctionForce.length)
-			}
+
+			body.applyForce(accelerationForce)
+			body.applyForce(maneuveringForce)
+
+			val targetRadius = t.shape.asInstanceOf[Circle].radius
+			val missileRadius = body.shape.asInstanceOf[Circle].radius
+			killed = (t.position - body.position).length - targetRadius - missileRadius <= 10
 		}
-
-		body.applyForce(accelerationForce)
-		body.applyForce(maneuveringForce)
-
-		val targetRadius = target.shape.asInstanceOf[Circle].radius
-		val missileRadius = body.shape.asInstanceOf[Circle].radius
-		killed = (target.position - body.position).length - targetRadius - missileRadius <= 10
 
 		!killed
 	}
