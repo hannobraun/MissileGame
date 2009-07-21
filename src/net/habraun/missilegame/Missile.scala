@@ -25,7 +25,8 @@ import net.habraun.sd.collision._
 
 
 
-class Missile(target: () => Option[Body], val hostile: Boolean) extends GameEntity {
+abstract class Missile(target: () => Option[Body], val hostile: Boolean, maxAccelerationForce: Double,
+		maxManeuveringForce: Double) extends GameEntity {
 
 	val body = {
 		val body = new Body
@@ -49,9 +50,6 @@ class Missile(target: () => Option[Body], val hostile: Boolean) extends GameEnti
 
 	def update = {
 		for (t <- target()) {
-			val maxAccelerationForce = 5000.0
-			val maxManeuveringForce = 3000.0
-
 			val nominalHeading = (t.position - body.position).normalize
 			val deviatingVelocity = body.velocity.project(nominalHeading.orthogonal)
 		
@@ -71,7 +69,7 @@ class Missile(target: () => Option[Body], val hostile: Boolean) extends GameEnti
 
 			val targetRadius = t.shape.asInstanceOf[Circle].radius
 			val missileRadius = body.shape.asInstanceOf[Circle].radius
-			killed = (t.position - body.position).length - targetRadius - missileRadius <= 10
+			killed = (t.position - body.position).length - targetRadius - missileRadius <= 50
 		}
 
 		if (target() == None)
