@@ -74,6 +74,9 @@ class Missile(target: () => Option[Body], val hostile: Boolean) extends GameEnti
 			killed = (t.position - body.position).length - targetRadius - missileRadius <= 10
 		}
 
+		if (target() == None)
+			killed = true
+
 		!killed
 	}
 }
