@@ -93,6 +93,7 @@ object Main {
 		val tubeData = Array((Vec2D(-200, 0), Vec2D(-100, 0)),
 							 (Vec2D(0, -200), Vec2D(0, -100)),
 							 (Vec2D(200, 0), Vec2D(100, 0)))
+		var cooldownTimer = 0
 
 
 		var zoom = 1.0
@@ -135,9 +136,11 @@ object Main {
 			}
 
 			// Launch defensive missiles if something comes near the ship.
+			if (cooldownTimer > 0) cooldownTimer -= 1
 			entities.foreach((entity) => {
 				if ((entity.body.position - ship.body.position).length < 7500 && entity != ship
-						&& !launchedMissiles.contains(entity) && !launchedMissiles.values.contains(entity)) {
+						&& !launchedMissiles.contains(entity) && !launchedMissiles.values.contains(entity)
+						&& cooldownTimer == 0) {
 					val (position, velocity) = tubeData(tube)
 					val target = () => if (entity.active) Some(entity) else None
 					val missile = spawnDefensiveMissile(target, position, velocity, world, entities, view,
@@ -147,6 +150,8 @@ object Main {
 
 					tube += 1
 					if (tube > 2) tube = 0
+
+					cooldownTimer = 300
 				}
 			})
 
