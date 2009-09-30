@@ -59,7 +59,7 @@ abstract class Missile(target: () => Option[GameEntity], val hostile: Boolean, m
 	def update = {
 		for (t <- target()) {
 			val nominalHeading = (t.body.position - body.position).normalize
-			val deviatingVelocity = body.velocity.project(nominalHeading.orthogonal)
+			val deviatingVelocity = body.velocity.projectOn(nominalHeading.orthogonal)
 		
 			val accelerationForce = nominalHeading * maxAccelerationForce
 			val maneuveringForce = {
