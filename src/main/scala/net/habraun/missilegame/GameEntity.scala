@@ -20,17 +20,22 @@ package net.habraun.missilegame
 
 
 
-import net.habraun.sd._
+import net.habraun.sd.collision.shape.Circle
+import net.habraun.sd.core.Body
 
 
 
 trait GameEntity {
 
+	type MGBody = Body with Circle
+
+
+
 	/**
 	 * Returns the body that represents the entity in the physics simulation.
 	 */
 
-	def body: Body
+	def body: MGBody
 
 
 

@@ -20,7 +20,8 @@ package net.habraun.missilegame
 
 
 
-import net.habraun.sd._
+import net.habraun.sd.collision.shape.Circle
+import net.habraun.sd.core.Body
 import net.habraun.sd.collision._
 
 
@@ -28,9 +29,9 @@ import net.habraun.sd.collision._
 class Ship extends GameEntity {
 
 	val body = {
-		val body = new Body
+		val body = new Body with Circle {}
 		body.mass = 100000000
-		body.shape = Circle(150)
+		body.radius = 150
 
 		body
 	}

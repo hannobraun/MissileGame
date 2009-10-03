@@ -20,8 +20,8 @@ package net.habraun.missilegame
 
 
 
-import net.habraun.sd._
-import net.habraun.sd.collision._
+import net.habraun.sd.collision.shape.Circle
+import net.habraun.sd.core.Body
 
 
 
@@ -29,9 +29,9 @@ abstract class Missile(target: () => Option[GameEntity], val hostile: Boolean, m
 		maxManeuveringForce: Double) extends GameEntity {
 
 	val body = {
-		val body = new Body
+		val body = new Body with Circle {}
 		body.mass = 150
-		body.shape = Circle(1)
+		body.radius = 1
 
 		body
 	}
@@ -75,8 +75,8 @@ abstract class Missile(target: () => Option[GameEntity], val hostile: Boolean, m
 			body.applyForce(accelerationForce)
 			body.applyForce(maneuveringForce)
 
-			val targetRadius = t.body.shape.asInstanceOf[Circle].radius
-			val missileRadius = body.shape.asInstanceOf[Circle].radius
+			val targetRadius = t.body.radius
+			val missileRadius = body.radius
 			if ((t.body.position - body.position).length - targetRadius - missileRadius <= 50) {
 				killed = true
 				t.damage(1)
