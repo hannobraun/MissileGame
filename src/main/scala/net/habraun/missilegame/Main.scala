@@ -156,6 +156,9 @@ object Main {
 			if (missing > 0) {
 				Thread.sleep(missing)
 			}
+			else {
+				Console.println("Warning: Last step took " + -missing + "ms longer than allowed.")
+			}
 		}
 	}
 
