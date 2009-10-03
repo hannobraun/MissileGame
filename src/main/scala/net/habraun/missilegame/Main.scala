@@ -68,13 +68,11 @@ object Main {
 		canvas.getCamera.addInputEventListener(mouseHandler.handler)
 
 		// Create a world for the physics simulation and a container for the game entities.
-		val world = new World
-		val entities = new HashSet[GameEntity]
+		var world = new World[GameEntity]
 
 		// Create the player's ship.
 		val ship = new Ship
 		world.add(ship)
-		entities += ship
 
 		// Initialize the display.
 		val view = new View(canvas.getLayer, ship)
@@ -107,13 +105,12 @@ object Main {
 			zoom = Math.min(5, zoom)
 
 			// Update game entities.
-			entities.foreach((entity) => {
-				if (!entity.update) {
-					world.remove(entity)
-					entities -= entity
-					view.addView(new Explosion(entity.position, 10, scannerRadius))
+			for ( entity <- world.bodies ) {
+				if ( !entity.update ) {
+					view.addView( new Explosion( entity.position, 10, scannerRadius ) )
+					world.remove( entity )
 				}
-			})
+			}
 
 			// Step the physics simulation.
 			world.step(timeStep)
@@ -125,26 +122,25 @@ object Main {
 			attackTimer1 -= 1
 			attackTimer2 -= 1
 			if (attackTimer1 <= 0) {
-				spawnOffensiveMissile(() => Some(ship), Vec2D(10, -10000), Vec2D(100, -100), world,
-						entities, view, true)
+				spawnOffensiveMissile(() => Some(ship), Vec2D(10, -10000), Vec2D(100, -100), world, view,
+						true)
 				attackTimer1 = 500
 			}
 			if (attackTimer2 <= 0) {
-				spawnOffensiveMissile(() => Some(ship), Vec2D(-10, -10000), Vec2D(-100, -100), world,
-						entities, view, true)
+				spawnOffensiveMissile(() => Some(ship), Vec2D(-10, -10000), Vec2D(-100, -100), world, view,
+						true)
 				attackTimer2 = 500
 			}
 
 			// Launch defensive missiles if something comes near the ship.
 			if (cooldownTimer > 0) cooldownTimer -= 1
-			entities.foreach((entity) => {
+			world.bodies.foreach( ( entity ) => {
 				if ((entity.position - ship.position).length < 9000 && entity != ship
 						&& !launchedMissiles.contains(entity) && !launchedMissiles.values.contains(entity)
 						&& cooldownTimer == 0) {
 					val (position, velocity) = tubeData(tube)
 					val target = () => if (entity.active) Some(entity) else None
-					val missile = spawnDefensiveMissile(target, position, velocity, world, entities, view,
-							false)
+					val missile = spawnDefensiveMissile(target, position, velocity, world, view, false)
 
 					launchedMissiles.put(missile, entity)
 
@@ -166,7 +162,7 @@ object Main {
 
 
 	def spawnOffensiveMissile(target: () => Option[GameEntity], position: Vec2D, velocity: Vec2D,
-			world: World, entities: Set[GameEntity], view: View, hostile: Boolean): Missile = {
+			world: World[GameEntity], view: View, hostile: Boolean): Missile = {
 		val missile = new OffensiveMissile(target, hostile)
 		val missileView = new MissileView(missile, scannerRadius)
 
@@ -174,7 +170,6 @@ object Main {
 		missile.velocity = velocity
 
 		world.add(missile)
-		entities += missile
 
 		view.addView(missileView)
 
@@ -184,7 +179,7 @@ object Main {
 
 
 	def spawnDefensiveMissile(target: () => Option[GameEntity], position: Vec2D, velocity: Vec2D,
-			world: World, entities: Set[GameEntity], view: View, hostile: Boolean): Missile = {
+			world: World[GameEntity], view: View, hostile: Boolean): Missile = {
 		val missile = new DefensiveMissile(target, hostile)
 		val missileView = new MissileView(missile, scannerRadius)
 
@@ -192,7 +187,6 @@ object Main {
 		missile.velocity = velocity
 
 		world.add(missile)
-		entities += missile
 
 		view.addView(missileView)
 
