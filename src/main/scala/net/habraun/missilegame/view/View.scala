@@ -75,7 +75,7 @@ class View(layer: PLayer, ship: Ship) {
 			scannerDisplay.update(zoom)
 
 			entityViews.foreach((entityView) => {
-				if (!entityView.update(10000 / zoom, ship.body.position)) {
+				if (!entityView.update(10000 / zoom, ship.position)) {
 					entityViews.removeEntry(entityView)
 					scannerDisplay.node.removeChild(entityView.node)
 				}

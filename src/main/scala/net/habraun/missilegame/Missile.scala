@@ -28,13 +28,9 @@ import net.habraun.sd.core.Body
 abstract class Missile(target: () => Option[GameEntity], val hostile: Boolean, maxAccelerationForce: Double,
 		maxManeuveringForce: Double) extends GameEntity {
 
-	val body = {
-		val body = new Body with Circle {}
-		body.mass = 150
-		body.radius = 1
-
-		body
-	}
+	// Set physical attributes
+	mass = 150
+	radius = 1
 
 
 
@@ -58,12 +54,12 @@ abstract class Missile(target: () => Option[GameEntity], val hostile: Boolean, m
 
 	def update = {
 		for (t <- target()) {
-			val nominalHeading = (t.body.position - body.position).normalize
-			val deviatingVelocity = body.velocity.projectOn(nominalHeading.orthogonal)
+			val nominalHeading = (t.position - position).normalize
+			val deviatingVelocity = velocity.projectOn(nominalHeading.orthogonal)
 		
 			val accelerationForce = nominalHeading * maxAccelerationForce
 			val maneuveringForce = {
-				val correctionForce = -deviatingVelocity * body.mass / Main.timeStep
+				val correctionForce = -deviatingVelocity * mass / Main.timeStep
 				if (correctionForce * correctionForce <= maxManeuveringForce) {
 					correctionForce
 				}
@@ -72,12 +68,12 @@ abstract class Missile(target: () => Option[GameEntity], val hostile: Boolean, m
 				}
 			}
 
-			body.applyForce(accelerationForce)
-			body.applyForce(maneuveringForce)
+			applyForce(accelerationForce)
+			applyForce(maneuveringForce)
 
-			val targetRadius = t.body.radius
-			val missileRadius = body.radius
-			if ((t.body.position - body.position).length - targetRadius - missileRadius <= 50) {
+			val targetRadius = t.radius
+			val missileRadius = radius
+			if ((t.position - position).length - targetRadius - missileRadius <= 50) {
 				killed = true
 				t.damage(1)
 			}

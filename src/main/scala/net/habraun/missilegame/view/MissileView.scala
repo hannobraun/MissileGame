@@ -84,17 +84,17 @@ class MissileView(missile: Missile, scannerRadius: Double) extends GameEntityVie
 
 
 	def update(scanRange: Double, center: Vec2D) = {
-		val x = (missile.body.position.x - center.x) * scannerRadius / scanRange
-		val y = (missile.body.position.y - center.y) * scannerRadius / scanRange
+		val x = (missile.position.x - center.x) * scannerRadius / scanRange
+		val y = (missile.position.y - center.y) * scannerRadius / scanRange
 		node.setTransform(AffineTransform.getTranslateInstance(x, y))
 		node.scale(15)
 
-		distanceNode.setText((missile.body.position - center).length.toInt.toString)
+		distanceNode.setText((missile.position - center).length.toInt.toString)
 
-		speedNode.setText(missile.body.velocity.length.toInt.toString)
+		speedNode.setText(missile.velocity.length.toInt.toString)
 
 		val r = Vec2D(0, -1)
-		val v = missile.body.velocity
+		val v = missile.velocity
 		val angle = Math.toDegrees(Math.acos((r * v) / (r.length * v.length)))
 		val orientation = if (v.x < 0) angle else 360 - angle
 		orientationNode.setText(orientation.toInt.toString)

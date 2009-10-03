@@ -28,13 +28,9 @@ import net.habraun.sd.collision._
 
 class Ship extends GameEntity {
 
-	val body = {
-		val body = new Body with Circle {}
-		body.mass = 100000000
-		body.radius = 150
-
-		body
-	}
+	// Set physical attributes.
+	mass = 100000000
+	radius = 150
 
 
 

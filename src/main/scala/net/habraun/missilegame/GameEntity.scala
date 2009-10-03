@@ -25,19 +25,7 @@ import net.habraun.sd.core.Body
 
 
 
-trait GameEntity {
-
-	type MGBody = Body with Circle
-
-
-
-	/**
-	 * Returns the body that represents the entity in the physics simulation.
-	 */
-
-	def body: MGBody
-
-
+trait GameEntity extends Body with Circle {
 
 	/**
 	 * Updates the entity.

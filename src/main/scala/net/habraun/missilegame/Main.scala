@@ -73,7 +73,7 @@ object Main {
 
 		// Create the player's ship.
 		val ship = new Ship
-		world.add(ship.body)
+		world.add(ship)
 		entities += ship
 
 		// Initialize the display.
@@ -109,9 +109,9 @@ object Main {
 			// Update game entities.
 			entities.foreach((entity) => {
 				if (!entity.update) {
-					world.remove(entity.body)
+					world.remove(entity)
 					entities -= entity
-					view.addView(new Explosion(entity.body.position, 10, scannerRadius))
+					view.addView(new Explosion(entity.position, 10, scannerRadius))
 				}
 			})
 
@@ -138,7 +138,7 @@ object Main {
 			// Launch defensive missiles if something comes near the ship.
 			if (cooldownTimer > 0) cooldownTimer -= 1
 			entities.foreach((entity) => {
-				if ((entity.body.position - ship.body.position).length < 9000 && entity != ship
+				if ((entity.position - ship.position).length < 9000 && entity != ship
 						&& !launchedMissiles.contains(entity) && !launchedMissiles.values.contains(entity)
 						&& cooldownTimer == 0) {
 					val (position, velocity) = tubeData(tube)
@@ -170,10 +170,10 @@ object Main {
 		val missile = new OffensiveMissile(target, hostile)
 		val missileView = new MissileView(missile, scannerRadius)
 
-		missile.body.position = position
-		missile.body.velocity = velocity
+		missile.position = position
+		missile.velocity = velocity
 
-		world.add(missile.body)
+		world.add(missile)
 		entities += missile
 
 		view.addView(missileView)
@@ -188,10 +188,10 @@ object Main {
 		val missile = new DefensiveMissile(target, hostile)
 		val missileView = new MissileView(missile, scannerRadius)
 
-		missile.body.position = position
-		missile.body.velocity = velocity
+		missile.position = position
+		missile.velocity = velocity
 
-		world.add(missile.body)
+		world.add(missile)
 		entities += missile
 
 		view.addView(missileView)
