@@ -132,13 +132,13 @@ object Main {
 			attackTimer1 -= 1
 			attackTimer2 -= 1
 			if (attackTimer1 <= 0) {
-				spawnOffensiveMissile(() => Some(ship), Vec2D(10, -10000), Vec2D(100, -100), world, view,
-						true)
+				spawnMissile(() => Some(ship), Vec2D(10, -10000), Vec2D(100, -100), world, view, true,
+						OffensiveMissileAttributes)
 				attackTimer1 = 500
 			}
 			if (attackTimer2 <= 0) {
-				spawnOffensiveMissile(() => Some(ship), Vec2D(-10, -10000), Vec2D(-100, -100), world, view,
-						true)
+				spawnMissile(() => Some(ship), Vec2D(-10, -10000), Vec2D(-100, -100), world, view, true,
+						OffensiveMissileAttributes)
 				attackTimer2 = 500
 			}
 
@@ -152,7 +152,8 @@ object Main {
 						&& cooldownTimer == 0) {
 					val (position, velocity) = tubeData(tube)
 					val target = () => if (entity.active) Some(entity) else None
-					val missile = spawnDefensiveMissile(target, position, velocity, world, view, false)
+					val missile = spawnMissile(target, position, velocity, world, view, false,
+							DefensiveMissileAttributes)
 
 					launchedMissiles.put(missile, entity)
 
@@ -178,26 +179,11 @@ object Main {
 
 
 
-	def spawnOffensiveMissile(target: () => Option[GameEntity], position: Vec2D, velocity: Vec2D,
-			world: World[GameEntity], view: View, hostile: Boolean): Missile = {
-		val missile = new OffensiveMissile(target, hostile)
-		val missileView = new MissileView(missile, scannerRadius)
+	def spawnMissile(target: () => Option[GameEntity], position: Vec2D, velocity: Vec2D,
+			world: World[GameEntity], view: View, hostile: Boolean, attributes: MissileAttributes):
+			Missile = {
 
-		missile.position = position
-		missile.velocity = velocity
-
-		world.add(missile)
-
-		view.addView(missileView)
-
-		missile
-	}
-
-
-
-	def spawnDefensiveMissile(target: () => Option[GameEntity], position: Vec2D, velocity: Vec2D,
-			world: World[GameEntity], view: View, hostile: Boolean): Missile = {
-		val missile = new DefensiveMissile(target, hostile)
+		val missile = new Missile(target, hostile, attributes)
 		val missileView = new MissileView(missile, scannerRadius)
 
 		missile.position = position

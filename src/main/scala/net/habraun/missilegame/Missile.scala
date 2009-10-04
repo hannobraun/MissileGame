@@ -25,7 +25,7 @@ import net.habraun.sd.core.Body
 
 
 
-abstract class Missile(target: () => Option[GameEntity], val hostile: Boolean, attributes: MissileAttributes)
+class Missile(target: () => Option[GameEntity], val hostile: Boolean, attributes: MissileAttributes)
 		extends GameEntity {
 
 	// Set physical attributes
