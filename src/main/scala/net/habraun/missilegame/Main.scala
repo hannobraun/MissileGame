@@ -99,10 +99,14 @@ object Main {
 		while (true) {
 			val timeBefore = System.currentTimeMillis
 
+			Console.println( "1: " + ( System.currentTimeMillis - timeBefore ) )
+
 			// Adjust zoom according to mouse wheel rotation.
 			zoom += -mouseHandler.wheelRotation * 0.1
 			zoom = Math.max(0.01, zoom)
 			zoom = Math.min(5, zoom)
+
+			Console.println( "2: " + ( System.currentTimeMillis - timeBefore ) )
 
 			// Update game entities.
 			for ( entity <- world.bodies ) {
@@ -112,11 +116,17 @@ object Main {
 				}
 			}
 
+			Console.println( "3: " + ( System.currentTimeMillis - timeBefore ) )
+
 			// Step the physics simulation.
 			world.step(timeStep)
 
+			Console.println( "4: " + ( System.currentTimeMillis - timeBefore ) )
+
 			// Update the display.
 			view.update(zoom)
+
+			Console.println( "5: " + ( System.currentTimeMillis - timeBefore ) )
 
 			// Spawn a missile if a timer has run out.
 			attackTimer1 -= 1
@@ -131,6 +141,8 @@ object Main {
 						true)
 				attackTimer2 = 500
 			}
+
+			Console.println( "6: " + ( System.currentTimeMillis - timeBefore ) )
 
 			// Launch defensive missiles if something comes near the ship.
 			if (cooldownTimer > 0) cooldownTimer -= 1
@@ -150,6 +162,8 @@ object Main {
 					cooldownTimer = 300
 				}
 			})
+
+			Console.println( "7: " + ( System.currentTimeMillis - timeBefore ) )
 
 			val delta = System.currentTimeMillis - timeBefore
 			val missing = (timeStep * 1000).toLong - delta

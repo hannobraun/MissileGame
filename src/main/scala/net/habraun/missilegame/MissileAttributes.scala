@@ -20,9 +20,27 @@ package net.habraun.missilegame
 
 
 
-import net.habraun.sd._
+trait MissileAttributes {
+	def maxAccelerationForce: Double
+	def maxManeuveringForce: Double
+	def mass: Double
+	def radius: Double
+}
 
 
 
-class DefensiveMissile( target: () => Option[GameEntity], hostile: Boolean )
-		extends Missile( target, hostile, DefensiveMissileAttributes )
+object OffensiveMissileAttributes extends MissileAttributes {
+	val maxAccelerationForce = 5000.0
+	val maxManeuveringForce = 3000.0
+	val mass = 150.0
+	val radius = 1.0
+}
+
+
+
+object DefensiveMissileAttributes extends MissileAttributes {
+	val maxAccelerationForce = 6000.0
+	val maxManeuveringForce = 5000.0
+	val mass = 50.0
+	val radius = 1.0
+}
